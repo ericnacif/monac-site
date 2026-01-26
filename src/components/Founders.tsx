@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export function Founders() {
     return (
-        <section className="py-32 bg-white relative">
+        <section id="about" className="py-32 bg-white relative">
             <div className="max-w-[1000px] mx-auto px-6 lg:px-12">
 
                 <div className="text-center mb-20">

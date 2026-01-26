@@ -1,30 +1,30 @@
 import { motion } from "framer-motion";
 import { Store, ShoppingBag, Truck, Pill } from "lucide-react";
 
-const segments = [
-    {
-        icon: <Store size={32} />,
-        title: "Supermercados",
-        desc: "PDV ultra-rápido que não para nunca. Emissão em contingência offline, integração com balanças e gestão de validade de perecíveis."
-    },
-    {
-        icon: <Pill size={32} />,
-        title: "Farmácias",
-        desc: "Conformidade total. Módulo SNGPC integrado para controlados, gestão de lotes e integração com Farmácia Popular."
-    },
-    {
-        icon: <Truck size={32} />,
-        title: "Distribuidoras",
-        desc: "Logística inteligente. Controle de rotas, separação de pedidos via coletor de dados e tabelas de preço por região."
-    },
-    {
-        icon: <ShoppingBag size={32} />,
-        title: "Varejo Geral",
-        desc: "Para lojas de roupas, sapatos e presentes. Controle de grade (cor e tamanho), crediário próprio e curva ABC de vendas."
-    }
-];
-
 export function Segments() {
+    const segments = [
+        {
+            icon: <Store size={32} />,
+            title: "Supermercados",
+            desc: "PDV ultra-rápido, contingência offline e integração com balanças."
+        },
+        {
+            icon: <Pill size={32} />,
+            title: "Farmácias",
+            desc: "Módulo SNGPC integrado, gestão de lotes de controlados e Farmácia Popular."
+        },
+        {
+            icon: <Truck size={32} />,
+            title: "Distribuidoras",
+            desc: "Controle de rotas, separação via coletor de dados e tabelas de preço por região."
+        },
+        {
+            icon: <ShoppingBag size={32} />,
+            title: "Varejo Geral",
+            desc: "Para lojas de roupas e sapatos. Controle de grade (cor/tamanho) e crediário próprio."
+        }
+    ];
+
     return (
         <section className="py-24 bg-atlas-paper border-b border-atlas-ink/5">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -32,7 +32,7 @@ export function Segments() {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-atlas-blue mb-4 block">
                         Soluções Especializadas
                     </span>
-                    <h2 className="text-4xl font-light text-atlas-ink">
+                    <h2 className="text-3xl md:text-4xl font-light text-atlas-ink">
                         O Atlas fala a língua do <span className="font-serif italic text-atlas-blue">seu negócio</span>.
                     </h2>
                 </div>
@@ -51,9 +51,7 @@ export function Segments() {
                                 {seg.icon}
                             </div>
                             <h3 className="text-lg font-medium mb-3 text-atlas-ink">{seg.title}</h3>
-                            <p className="text-xs leading-relaxed text-atlas-ink/60">
-                                {seg.desc}
-                            </p>
+                            <p className="text-xs leading-relaxed text-atlas-ink/60">{seg.desc}</p>
                         </motion.div>
                     ))}
                 </div>
