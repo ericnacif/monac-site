@@ -1,9 +1,15 @@
 import { Navbar } from "./components/Navbar";
 import { GeometricArt } from "./components/GeometricArt";
 import { Infrastructure } from "./components/Infrastructure";
+import { StatsBar } from "./components/StatsBar"; // <--- NOVO
+import { Segments } from "./components/Segments";
+import { ProductShowcase } from "./components/ProductShowcase";
 import { Features } from "./components/Features";
-import { Pricing } from "./components/Pricing"; // <--- NOVO
-import { Footer } from "./components/Footer";   // <--- NOVO
+import { Founders } from "./components/Founders";
+import { Pricing } from "./components/Pricing";
+import { FAQ } from "./components/FAQ";
+import { Footer } from "./components/Footer";
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp"; // <--- NOVO
 import { useTranslation } from "react-i18next";
 import { ArrowDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,18 +20,15 @@ function App() {
   return (
     <div className="min-h-screen bg-atlas-paper text-atlas-ink font-sans selection:bg-atlas-blue selection:text-white overflow-x-hidden relative">
 
-      {/* Noise Texture */}
       <div className="fixed inset-0 bg-noise pointer-events-none z-50 opacity-40 mix-blend-multiply"></div>
 
       <Navbar />
 
-      {/* --- HERO --- */}
+      {/* 1. HERO */}
       <main className="relative pt-32 lg:pt-40 px-6 lg:px-12 max-w-[1400px] mx-auto pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[75vh]">
-          {/* ... (Todo o código da Hero igual ao anterior) ... */}
-
-          {/* Se não tiver o código da Hero salvo, me avise que mando o bloco completo novamente */}
-          {/* Vou assumir que você manteve o bloco da Hero Section aqui */}
+          {/* ... (Bloco Hero Texto e Arte Geométrica mantém igual) ... */}
+          {/* Se precisar, me peça o código da Hero de volta, mas acredito que você já tem */}
           <div className="lg:col-span-5 relative z-10 min-h-[400px]">
             <AnimatePresence mode="wait">
               <motion.div
@@ -54,7 +57,7 @@ function App() {
                     {t('hero.subtitle')}
                   </p>
                   <button
-                    onClick={() => window.open('https://wa.me/5533984561234', '_blank')}
+                    onClick={() => window.open('https://wa.me/5533999999999', '_blank')}
                     className="group flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] text-atlas-ink hover:text-atlas-blue transition-colors w-fit pb-2 border-b border-transparent hover:border-atlas-blue cursor-pointer"
                   >
                     {t('hero.cta_primary')}
@@ -69,17 +72,23 @@ function App() {
             <GeometricArt />
           </div>
         </div>
-
-        <div className="mt-10 lg:mt-0 border-t border-atlas-ink/10 pt-6 flex justify-between items-center text-[9px] uppercase tracking-widest text-atlas-ink/40 font-mono">
-          <span>Explore as soluções</span>
-          <span>Manhuaçu — MG</span>
-        </div>
       </main>
 
       <Infrastructure />
+
+      {/* STATS BAR (Novo) */}
+      <StatsBar />
+
+      <Segments />
+      <ProductShowcase />
       <Features />
-      <Pricing /> {/* Adicionado */}
-      <Footer />  {/* Adicionado */}
+      <Founders />
+      <Pricing />
+      <FAQ />
+      <Footer />
+
+      {/* WHATSAPP FLUTUANTE (Novo) */}
+      <FloatingWhatsApp />
 
     </div>
   )
