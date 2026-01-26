@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
+// A linha do "motion" foi removida daqui porque não estava sendo usada
 
 export function Navbar() {
   const { t, i18n } = useTranslation();
