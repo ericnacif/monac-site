@@ -8,14 +8,15 @@ import { Features } from "./components/Features";
 import { Founders } from "./components/Founders";
 import { Pricing } from "./components/Pricing";
 import { FAQ } from "./components/FAQ";
+import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
-import { CookieConsent } from "./components/CookieConsent"; // <--- NOVO
+import { CookieConsent } from "./components/CookieConsent";
 import { ArrowDown } from "lucide-react";
-import { motion, useScroll, useSpring } from "framer-motion"; // <--- Novos hooks
+import { motion, useScroll, useSpring } from "framer-motion";
 
 function App() {
-  // Hook para a barra de progresso
+  // Hook para a barra de progresso azul no topo
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -26,16 +27,18 @@ function App() {
   return (
     <div className="min-h-screen bg-atlas-paper text-atlas-ink font-sans selection:bg-atlas-blue selection:text-white overflow-x-hidden relative">
 
-      {/* BARRA DE PROGRESSO NO TOPO */}
+      {/* BARRA DE PROGRESSO DE LEITURA */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-atlas-blue origin-left z-[60]"
         style={{ scaleX }}
       />
 
+      {/* Textura de Ruído (Noise) */}
       <div className="fixed inset-0 bg-noise pointer-events-none z-50 opacity-40 mix-blend-multiply"></div>
 
       <Navbar />
 
+      {/* 1. HERO SECTION */}
       <main className="relative pt-32 lg:pt-40 px-6 lg:px-12 max-w-[1400px] mx-auto pb-20">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[75vh]">
@@ -90,6 +93,7 @@ function App() {
 
       </main>
 
+      {/* SEÇÕES DO SITE */}
       <Infrastructure />
       <StatsBar />
       <Segments />
@@ -98,10 +102,11 @@ function App() {
       <Founders />
       <Pricing />
       <FAQ />
+      <Contact />
       <Footer />
-      <FloatingWhatsApp />
 
-      {/* CONSENTIMENTO DE COOKIES (NOVO) */}
+      {/* ELEMENTOS FLUTUANTES */}
+      <FloatingWhatsApp />
       <CookieConsent />
 
     </div>

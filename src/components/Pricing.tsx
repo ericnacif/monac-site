@@ -1,17 +1,21 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight, Plus, HelpCircle } from "lucide-react";
 
 export function Pricing() {
+    const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
 
     const handleBuy = (planName: string) => {
-        const text = `Olá! Tenho interesse no plano *${planName}* do Atlas ERP.`;
+        const cycle = billing === "monthly" ? "Mensal" : "Anual (com desconto)";
+        const text = `Olá! Tenho interesse no plano *${planName}* (${cycle}) do Atlas ERP.`;
         window.open(`https://wa.me/5533999999999?text=${encodeURIComponent(text)}`, '_blank');
     };
 
     const plans = [
         {
             name: "Standard",
-            price: "149,90",
+            priceMonthly: 149.90,
+            priceYearly: 119.90,
             target: "Pequenos Negócios",
             desc: "O essencial para estar em dia com o fisco e organizar a casa.",
             features: ["1 Usuário", "Emissão Fiscal (NF-e/NFC-e)", "Suporte Chat/Email", "Gestão de Vendas Simples"],
@@ -19,7 +23,8 @@ export function Pricing() {
         },
         {
             name: "Pro",
-            price: "289,90",
+            priceMonthly: 289.90,
+            priceYearly: 229.90,
             target: "Negócios em Crescimento",
             desc: "Controle total: Financeiro, Estoque real e Inteligência de vendas.",
             features: ["Até 3 Usuários", "Financeiro Completo (DRE)", "Controle de Estoque Real", "Suporte Prioritário WhatsApp"],
@@ -27,7 +32,8 @@ export function Pricing() {
         },
         {
             name: "Premium",
-            price: "549,90",
+            priceMonthly: 549.90,
+            priceYearly: 439.90,
             target: "Redes e Alta Demanda",
             desc: "Para quem não pode parar. Multi-estoque e gestão avançada.",
             features: ["Usuários Ilimitados", "Multi-estoque (Loja + Depósito)", "Gestão de Comissão", "Backup em Tempo Real"],
@@ -39,24 +45,49 @@ export function Pricing() {
         <section id="pricing" className="py-24 md:py-32 border-t border-atlas-ink/5 bg-atlas-paper">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
 
-                <div className="mb-16 md:mb-20 text-center max-w-2xl mx-auto">
+                <div className="mb-12 text-center max-w-2xl mx-auto">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-atlas-blue mb-4 block">
                         Planos Transparentes
                     </span>
-                    <h2 className="text-3xl md:text-5xl font-light text-atlas-ink mb-6">
+                    <h2 className="text-3xl md:text-5xl font-light text-atlas-ink mb-8">
                         Investimento que se paga no <span className="font-serif italic text-atlas-blue">primeiro mês</span>.
                     </h2>
+
+                    {/* SWITCH MENSAL / ANUAL */}
+                    <div className="flex items-center justify-center gap-4 select-none">
+                        <span
+                            onClick={() => setBilling("monthly")}
+                            className={`text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors ${billing === "monthly" ? "text-atlas-ink" : "text-atlas-ink/40"}`}
+                        >
+                            Mensal
+                        </span>
+
+                        <button
+                            onClick={() => setBilling(billing === "monthly" ? "yearly" : "monthly")}
+                            className="w-14 h-8 bg-atlas-ink rounded-full p-1 relative transition-colors cursor-pointer"
+                        >
+                            <motion.div
+                                animate={{ x: billing === "monthly" ? 0 : 24 }}
+                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                className="w-6 h-6 bg-white rounded-full shadow-md"
+                            />
+                        </button>
+
+                        <span
+                            onClick={() => setBilling("yearly")}
+                            className={`text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors ${billing === "yearly" ? "text-atlas-ink" : "text-atlas-ink/40"}`}
+                        >
+                            Anual <span className="text-atlas-blue text-[9px] ml-1 bg-atlas-blue/10 px-1 py-0.5 rounded">-20%</span>
+                        </span>
+                    </div>
                 </div>
 
-                {/* Cards de Preço */}
+                {/* CARDS */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-20">
                     {plans.map((plan, i) => (
                         <motion.div
                             key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            viewport={{ once: true }}
+                            layout
                             className={`relative p-8 flex flex-col justify-between border rounded-sm transition-all duration-300 ${plan.highlight
                                     ? "bg-atlas-blue text-white border-atlas-blue shadow-2xl shadow-atlas-blue/20 transform md:-translate-y-4"
                                     : "bg-white border-atlas-ink/10 text-atlas-ink hover:border-atlas-blue/30"
@@ -67,15 +98,29 @@ export function Pricing() {
                                     {plan.target}
                                 </div>
                                 <h3 className="text-3xl font-light mb-4">{plan.name}</h3>
-                                <div className="mb-4">
+                                <div className="mb-4 h-16">
                                     <span className={`block text-[10px] uppercase tracking-widest mb-1 ${plan.highlight ? "text-white/60" : "text-atlas-ink/40"}`}>
                                         A partir de
                                     </span>
                                     <div className="flex items-baseline gap-1">
                                         <span className="text-sm opacity-60">R$</span>
-                                        <span className="text-4xl font-semibold tracking-tight">{plan.price}</span>
+                                        <span className="text-4xl font-semibold tracking-tight">
+                                            {billing === "monthly"
+                                                ? plan.priceMonthly.toFixed(2).replace('.', ',')
+                                                : plan.priceYearly.toFixed(2).replace('.', ',')
+                                            }
+                                        </span>
                                         <span className="text-sm opacity-60">/mês</span>
                                     </div>
+                                    {billing === "yearly" && (
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            className={`text-[10px] line-through opacity-50 ${plan.highlight ? "text-white" : "text-atlas-ink"}`}
+                                        >
+                                            de R$ {plan.priceMonthly.toFixed(2).replace('.', ',')}
+                                        </motion.div>
+                                    )}
                                 </div>
                                 <p className={`text-xs mb-8 leading-relaxed ${plan.highlight ? "text-white/80" : "text-atlas-ink/60"}`}>{plan.desc}</p>
                                 <div className="w-full h-px bg-current opacity-10 mb-8"></div>
@@ -102,7 +147,7 @@ export function Pricing() {
                     ))}
                 </div>
 
-                {/* Adicionais */}
+                {/* EXTRAS */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div className="bg-atlas-ink/[0.02] border border-atlas-ink/10 p-6 md:p-8 rounded-sm">
                         <div className="flex items-center gap-3 mb-4 text-atlas-ink">
