@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
     rel="stylesheet">
 
   <script>
@@ -93,28 +93,23 @@
       }
     }
 
-    /* LADO ESQUERDO: Textura Papel Clean */
+    /* FUNDOS E TEXTURAS */
     .bg-texture {
       background-color: #F2F0EB;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
     }
 
-    /* LADO DIREITO: Azul Monac Base */
     .bg-monac-blue {
       background: radial-gradient(circle at center, #0055EE 0%, #0047BB 60%, #003388 100%);
     }
 
-    /* GRID "BLUEPRINT" */
     .bg-grid-tech {
       background-size: 40px 40px;
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
       animation: gridMove 20s linear infinite;
       pointer-events: none;
     }
 
-    /* Textura de Ruído */
     .bg-noise-visible {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
       opacity: 0.25;
@@ -196,11 +191,26 @@
       animation: fadeUpAnim 0.8s ease-out 1.5s forwards;
     }
 
-    body.intro-finished .stagger-7 {
-      animation: fadeUpAnim 0.8s ease-out 1.6s forwards;
+    /* FOOTER DE VIDRO FINO */
+    .glass-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.4rem 0;
+      text-align: center;
+      font-size: 0.6rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.6);
+      z-index: 100;
+      opacity: 0;
+      animation: fadeUpAnim 0.8s ease-out 1.8s forwards;
     }
 
-    /* INPUT BEAM (Correção do CSS Mask aqui) */
+    /* INPUT BEAM */
     .input-wrapper {
       position: relative;
       border-radius: 0.5rem;
@@ -216,15 +226,10 @@
       padding: 1px;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
       background-size: 200% 100%;
-
-      /* Padrão WebKit (Chrome/Safari) */
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
-
-      /* Padrão Standard (Firefox/Futuro) */
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask-composite: exclude;
-
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
@@ -240,7 +245,7 @@
       animation: borderBeam 2s linear infinite;
     }
 
-    /* O Input Transparente */
+    /* INPUTS GLASS */
     .input-glass {
       background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -266,7 +271,7 @@
       -webkit-text-fill-color: white !important;
     }
 
-    /* BOTÃO */
+    /* BOTÃO CLEAN (Sem Shimmer) */
     .btn-interactive {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -321,7 +326,7 @@
 
 <body class="font-sans antialiased text-atlas-ink bg-atlas-paper">
 
-  <div class="min-h-screen md:h-full w-full flex flex-col md:flex-row relative overflow-hidden">
+  <div class="min-h-screen md:h-full w-full flex flex-col md:flex-row relative overflow-hidden pb-10 md:pb-0">
 
     <div id="left-panel"
       class="bg-texture relative flex flex-col items-center justify-center py-20 px-6 md:p-12 border-b md:border-b-0 md:border-r border-atlas-ink/5 shrink-0 md:h-full">
@@ -354,10 +359,6 @@
             </span>
           </div>
         </div>
-      </div>
-
-      <div class="absolute bottom-6 text-[10px] text-atlas-ink/40 hidden md:block stagger-item stagger-7">
-        © 2026 Monac Sistemas
       </div>
     </div>
 
@@ -407,10 +408,6 @@
               </button>
             </div>
           </form>
-
-          <div class="mt-8 text-[10px] text-white/30 text-center md:hidden stagger-item stagger-7">
-            © 2026 Monac Sistemas
-          </div>
         </div>
 
         <div id="success-message" class="hidden w-full max-w-sm flex-col items-center justify-center text-center">
@@ -432,6 +429,10 @@
     </div>
 
   </div>
+
+  <footer class="glass-footer stagger-item">
+    © 2026 Monac Sistemas. Todos os direitos reservados.
+  </footer>
 
   <script>
     // 1. ANIMAÇÃO DE ENTRADA
