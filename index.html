@@ -49,6 +49,10 @@
               '0%': { transform: 'scale(0)', opacity: '0' },
               '80%': { transform: 'scale(1.1)', opacity: '1' },
               '100%': { transform: 'scale(1)', opacity: '1' }
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
             }
           }
         }
@@ -81,18 +85,16 @@
       }
     }
 
-    /* LADO ESQUERDO: Textura Papel Clean */
+    /* TEXTURAS */
     .bg-texture {
       background-color: #F2F0EB;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
     }
 
-    /* LADO DIREITO: Azul Monac com Luz */
     .bg-monac-blue {
       background: radial-gradient(circle at center, #0055EE 0%, #0047BB 60%, #003388 100%);
     }
 
-    /* TEXTURA GRANULADA (Visível) */
     .bg-noise-visible {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
       opacity: 0.25;
@@ -100,7 +102,7 @@
       pointer-events: none;
     }
 
-    /* ANIMAÇÃO DE ABERTURA (PAINÉIS) */
+    /* ANIMAÇÃO PAINÉIS */
     #left-panel {
       width: 100%;
       z-index: 50;
@@ -133,10 +135,7 @@
       transform: translateY(0);
     }
 
-
-    /* --- CORREÇÃO DA ANIMAÇÃO CASCATA --- */
-
-    /* Definição explícita da animação para garantir que funcione */
+    /* CASCATA */
     @keyframes fadeUpAnim {
       0% {
         opacity: 0;
@@ -149,50 +148,39 @@
       }
     }
 
-    /* Itens começam invisíveis */
     .stagger-item {
       opacity: 0;
     }
 
-    /* Quando a classe 'intro-finished' é adicionada, a animação roda */
     body.intro-finished .stagger-1 {
       animation: fadeUpAnim 0.8s ease-out 1.0s forwards;
     }
 
-    /* Logo/Titulo */
     body.intro-finished .stagger-2 {
       animation: fadeUpAnim 0.8s ease-out 1.1s forwards;
     }
 
-    /* Descrição */
     body.intro-finished .stagger-3 {
       animation: fadeUpAnim 0.8s ease-out 1.2s forwards;
     }
 
-    /* Input 1 */
     body.intro-finished .stagger-4 {
       animation: fadeUpAnim 0.8s ease-out 1.3s forwards;
     }
 
-    /* Input 2 */
     body.intro-finished .stagger-5 {
       animation: fadeUpAnim 0.8s ease-out 1.4s forwards;
     }
 
-    /* Input 3 */
     body.intro-finished .stagger-6 {
       animation: fadeUpAnim 0.8s ease-out 1.5s forwards;
     }
 
-    /* Botão */
     body.intro-finished .stagger-7 {
       animation: fadeUpAnim 0.8s ease-out 1.6s forwards;
     }
 
-    /* Footer */
-
-
-    /* INPUTS GLASS */
+    /* INPUTS */
     .input-glass {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.25);
@@ -215,16 +203,12 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
-    .input-glass:-webkit-autofill,
-    .input-glass:-webkit-autofill:hover,
-    .input-glass:-webkit-autofill:focus,
-    .input-glass:-webkit-autofill:active {
+    .input-glass:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 30px #0047BB inset !important;
       -webkit-text-fill-color: white !important;
-      transition: background-color 5000s ease-in-out 0s;
     }
 
-    /* BOTÃO INTERATIVO */
+    /* BOTÃO */
     .btn-interactive {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -258,6 +242,23 @@
         transform: rotate(360deg);
       }
     }
+
+    /* CURSOR TYPEWRITER */
+    .cursor-blink {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background-color: #0047BB;
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
@@ -278,8 +279,14 @@
             <span class="text-4xl md:text-5xl font-serif italic text-atlas-blue">Sistemas.</span>
           </h1>
 
+          <div class="h-8 mt-4 mb-4 text-base md:text-lg text-atlas-ink/70 font-light flex items-center justify-center">
+            <span>Unificamos seu&nbsp;</span>
+            <span id="typewriter" class="font-serif italic text-atlas-blue font-medium"></span>
+            <span class="cursor-blink"></span>
+          </div>
+
           <div
-            class="mt-8 inline-flex items-center space-x-2 px-4 py-1.5 bg-white/60 backdrop-blur-sm border border-atlas-blue/10 rounded-full shadow-sm">
+            class="mt-4 inline-flex items-center space-x-2 px-4 py-1.5 bg-white/60 backdrop-blur-sm border border-atlas-blue/10 rounded-full shadow-sm">
             <span class="relative flex h-2 w-2">
               <span
                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-atlas-blue opacity-75"></span>
@@ -309,7 +316,7 @@
           <div class="text-center md:text-left mb-8 stagger-item stagger-2">
             <h2 class="text-2xl md:text-3xl font-semibold text-white mb-2 tracking-tight">Lista de Espera</h2>
             <p class="text-white/80 text-sm leading-relaxed font-light">
-              Unificamos Financeiro e Estoque.<br> Cadastre-se para o lançamento.
+              Garanta acesso antecipado ao sistema<br> que vai mudar sua empresa.
             </p>
           </div>
 
@@ -356,7 +363,6 @@
           </div>
           <h3 class="text-3xl font-serif italic text-white mb-2">Bem-vindo.</h3>
           <p class="text-white/80 text-sm">Seu cadastro foi recebido com sucesso.<br>Em breve entraremos em contato.</p>
-
           <a href="https://www.instagram.com/monac_sistemas/" target="_blank"
             class="mt-8 inline-flex items-center space-x-2 text-white/60 hover:text-white transition-colors duration-300 border border-white/20 px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-white/10">
             <span>Acompanhe no Instagram</span>
@@ -369,34 +375,62 @@
   </div>
 
   <script>
-    // 1. ANIMAÇÃO DE ENTRADA (Start)
+    // 1. ANIMAÇÃO DE ENTRADA
     window.addEventListener('load', () => {
-      // Pequeno delay para garantir carregamento, depois dispara a classe
-      setTimeout(() => {
-        document.body.classList.add('intro-finished');
-      }, 500);
+      setTimeout(() => { document.body.classList.add('intro-finished'); }, 500);
     });
 
-    // 2. MÁSCARA TELEFONE
+    // 2. TYPEWRITER EFFECT (Digitação)
+    const words = ["Estoque.", "Financeiro.", "Negócio."];
+    let i = 0;
+    let timer;
+
+    function typeWriter() {
+      const element = document.getElementById("typewriter");
+      const word = words[i];
+      const current = element.innerHTML;
+
+      // Se não acabou de escrever a palavra
+      if (current.length < word.length) {
+        element.innerHTML += word.charAt(current.length);
+        timer = setTimeout(typeWriter, 100); // Velocidade digitação
+      } else {
+        // Espera um pouco antes de apagar
+        setTimeout(erase, 2000);
+      }
+    }
+
+    function erase() {
+      const element = document.getElementById("typewriter");
+      const current = element.innerHTML;
+
+      if (current.length > 0) {
+        element.innerHTML = current.substring(0, current.length - 1);
+        timer = setTimeout(erase, 50); // Velocidade apagar
+      } else {
+        i = (i + 1) % words.length; // Próxima palavra
+        setTimeout(typeWriter, 500);
+      }
+    }
+
+    // Inicia o Typewriter após a animação de entrada
+    setTimeout(typeWriter, 2000);
+
+
+    // 3. MÁSCARA TELEFONE
     const phoneInput = document.getElementById('whatsapp-field');
     phoneInput.addEventListener('input', function (e) {
       let value = e.target.value.replace(/\D/g, "");
       if (value.length > 11) value = value.slice(0, 11);
       if (value.length > 2) {
-        if (value.length > 10) {
-          value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
-        } else if (value.length > 6) {
-          value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
-        } else {
-          value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-        }
-      } else if (value.length > 0) {
-        value = `(${value}`;
-      }
+        if (value.length > 10) value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+        else if (value.length > 6) value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+        else value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+      } else if (value.length > 0) value = `(${value}`;
       e.target.value = value;
     });
 
-    // 3. ENVIO AJAX
+    // 4. ENVIO AJAX
     const form = document.getElementById('monac-form');
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
