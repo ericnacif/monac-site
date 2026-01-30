@@ -43,7 +43,6 @@
           },
           animation: {
             'check': 'check 0.5s ease-in-out forwards',
-            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           },
           keyframes: {
             check: {
@@ -93,17 +92,15 @@
       background: radial-gradient(circle at center, #0055EE 0%, #0047BB 60%, #003388 100%);
     }
 
-    /* TEXTURA GRANULADA (Visível mas elegante) */
+    /* TEXTURA GRANULADA (Visível) */
     .bg-noise-visible {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
       opacity: 0.25;
-      /* 25% Opacidade = Visível */
       mix-blend-mode: overlay;
-      /* Mistura com o azul para não ficar cinza */
       pointer-events: none;
     }
 
-    /* ANIMAÇÕES DE ENTRADA */
+    /* ANIMAÇÃO DE ABERTURA (PAINÉIS) */
     #left-panel {
       width: 100%;
       z-index: 50;
@@ -136,22 +133,68 @@
       transform: translateY(0);
     }
 
-    .fade-in-delayed {
+
+    /* --- CORREÇÃO DA ANIMAÇÃO CASCATA --- */
+
+    /* Definição explícita da animação para garantir que funcione */
+    @keyframes fadeUpAnim {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Itens começam invisíveis */
+    .stagger-item {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 1s ease, transform 1s ease;
-      transition-delay: 1.2s;
     }
 
-    body.intro-finished .fade-in-delayed {
-      opacity: 1;
-      transform: translateY(0);
+    /* Quando a classe 'intro-finished' é adicionada, a animação roda */
+    body.intro-finished .stagger-1 {
+      animation: fadeUpAnim 0.8s ease-out 1.0s forwards;
     }
 
-    /* INPUTS (Estilo Glass que você gostou) */
+    /* Logo/Titulo */
+    body.intro-finished .stagger-2 {
+      animation: fadeUpAnim 0.8s ease-out 1.1s forwards;
+    }
+
+    /* Descrição */
+    body.intro-finished .stagger-3 {
+      animation: fadeUpAnim 0.8s ease-out 1.2s forwards;
+    }
+
+    /* Input 1 */
+    body.intro-finished .stagger-4 {
+      animation: fadeUpAnim 0.8s ease-out 1.3s forwards;
+    }
+
+    /* Input 2 */
+    body.intro-finished .stagger-5 {
+      animation: fadeUpAnim 0.8s ease-out 1.4s forwards;
+    }
+
+    /* Input 3 */
+    body.intro-finished .stagger-6 {
+      animation: fadeUpAnim 0.8s ease-out 1.5s forwards;
+    }
+
+    /* Botão */
+    body.intro-finished .stagger-7 {
+      animation: fadeUpAnim 0.8s ease-out 1.6s forwards;
+    }
+
+    /* Footer */
+
+
+    /* INPUTS GLASS */
     .input-glass {
       background: rgba(255, 255, 255, 0.1);
-      /* 10% Branco */
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: white;
       transition: all 0.3s ease;
@@ -165,29 +208,42 @@
       border-color: rgba(255, 255, 255, 0.8);
       outline: none;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-      /* Glow Branco */
+      transform: scale(1.01);
     }
 
     .input-glass::placeholder {
       color: rgba(255, 255, 255, 0.6);
     }
 
-    /* Fix Autofill Amarelo */
     .input-glass:-webkit-autofill,
     .input-glass:-webkit-autofill:hover,
     .input-glass:-webkit-autofill:focus,
     .input-glass:-webkit-autofill:active {
       -webkit-box-shadow: 0 0 0 30px #0047BB inset !important;
-      /* Cor exata do fundo */
       -webkit-text-fill-color: white !important;
       transition: background-color 5000s ease-in-out 0s;
+    }
+
+    /* BOTÃO INTERATIVO */
+    .btn-interactive {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-interactive:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      background-color: white;
+    }
+
+    .btn-interactive:active {
+      transform: translateY(0px);
     }
 
     /* LOADER */
     .loader {
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
-      border-top: 3px solid #fff;
+      border-top: 3px solid #0047BB;
       width: 20px;
       height: 20px;
       animation: spin 1s linear infinite;
@@ -216,7 +272,7 @@
           <img src="logo-monac.png" alt="Monac" class="h-32 md:h-40 w-auto mx-auto drop-shadow-sm">
         </div>
 
-        <div class="fade-in-delayed">
+        <div class="stagger-item stagger-1">
           <h1 class="flex flex-col items-center justify-center">
             <span class="text-4xl md:text-5xl font-light text-atlas-ink mb-1 md:mb-2 tracking-tight">Monac</span>
             <span class="text-4xl md:text-5xl font-serif italic text-atlas-blue">Sistemas.</span>
@@ -236,7 +292,7 @@
         </div>
       </div>
 
-      <div class="absolute bottom-6 text-[10px] text-atlas-ink/40 hidden md:block fade-in-delayed">
+      <div class="absolute bottom-6 text-[10px] text-atlas-ink/40 hidden md:block stagger-item stagger-7">
         © 2026 Monac Sistemas
       </div>
     </div>
@@ -248,9 +304,9 @@
 
       <div class="relative z-10 w-full h-full flex flex-col items-center justify-center py-16 px-6 md:p-12">
 
-        <div id="form-container" class="w-full max-w-sm flex flex-col justify-center fade-in-delayed">
+        <div id="form-container" class="w-full max-w-sm flex flex-col justify-center">
 
-          <div class="text-center md:text-left mb-8">
+          <div class="text-center md:text-left mb-8 stagger-item stagger-2">
             <h2 class="text-2xl md:text-3xl font-semibold text-white mb-2 tracking-tight">Lista de Espera</h2>
             <p class="text-white/80 text-sm leading-relaxed font-light">
               Unificamos Financeiro e Estoque.<br> Cadastre-se para o lançamento.
@@ -262,32 +318,32 @@
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
 
-            <div>
+            <div class="stagger-item stagger-3">
               <input type="text" name="empresa" required placeholder="Nome da Empresa" autocomplete="organization"
                 class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
             </div>
 
-            <div>
+            <div class="stagger-item stagger-4">
               <input type="email" name="email" required placeholder="Seu Melhor E-mail" autocomplete="email"
                 class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
             </div>
 
-            <div>
+            <div class="stagger-item stagger-5">
               <input type="tel" id="whatsapp-field" name="whatsapp" placeholder="WhatsApp (Opcional)" autocomplete="tel"
                 maxlength="15"
                 class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
             </div>
 
-            <div class="pt-2">
+            <div class="pt-2 stagger-item stagger-6">
               <button type="submit" id="submit-btn"
-                class="w-full bg-white hover:bg-white/90 text-atlas-blue font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-xl mt-2 uppercase tracking-wide text-sm flex justify-center items-center group">
+                class="btn-interactive w-full bg-white text-atlas-blue font-bold py-4 px-6 rounded-lg shadow-xl mt-2 uppercase tracking-wide text-sm flex justify-center items-center group">
                 <span id="btn-text">Entrar na Lista de Espera</span>
                 <div id="btn-loader" class="loader hidden"></div>
               </button>
             </div>
           </form>
 
-          <div class="mt-8 text-[10px] text-white/30 text-center md:hidden">
+          <div class="mt-8 text-[10px] text-white/30 text-center md:hidden stagger-item stagger-7">
             © 2026 Monac Sistemas
           </div>
         </div>
@@ -313,14 +369,15 @@
   </div>
 
   <script>
-    // 1. ANIMAÇÃO DE ENTRADA
+    // 1. ANIMAÇÃO DE ENTRADA (Start)
     window.addEventListener('load', () => {
+      // Pequeno delay para garantir carregamento, depois dispara a classe
       setTimeout(() => {
         document.body.classList.add('intro-finished');
       }, 500);
     });
 
-    // 2. MÁSCARA TELEFONE (ESTÁVEL V4.5)
+    // 2. MÁSCARA TELEFONE
     const phoneInput = document.getElementById('whatsapp-field');
     phoneInput.addEventListener('input', function (e) {
       let value = e.target.value.replace(/\D/g, "");
