@@ -8,17 +8,21 @@
   <title>Monac Sistemas - Lista de Espera</title>
   <link rel="icon" type="image/png" href="/favicon-monac.png">
 
-  <meta name="description" content="Monac Sistemas - Gestão Inteligente. Cadastre-se na lista de espera.">
+  <meta name="description" content="Gestão Inteligente. Unificamos Financeiro e Estoque.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monacsistemas.netlify.app/">
-  <meta property="og:title" content="Monac - Lista de Espera">
-  <meta property="og:image" content="https://monacsistemas.netlify.app/logo-monac.png">
+  <meta property="og:title" content="Monac Sistemas">
+  <meta property="og:image" content="https://monacsistemas.netlify.app/share-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Monac Sistemas">
+  <meta name="twitter:image" content="https://monacsistemas.netlify.app/share-image.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
     rel="stylesheet">
 
   <script>
@@ -32,12 +36,14 @@
           colors: {
             atlas: {
               blue: '#0047BB',
+              darkBlue: '#003388',
               ink: '#101820',
               paper: '#F2F0EB',
             }
           },
           animation: {
             'check': 'check 0.5s ease-in-out forwards',
+            'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
           },
           keyframes: {
             check: {
@@ -52,16 +58,22 @@
   </script>
 
   <style>
-    /* RESET E ESTRUTURA */
+    /* RESET */
     html,
     body {
       height: 100%;
       margin: 0;
     }
 
+    ::selection {
+      background: #0047BB;
+      color: #fff;
+    }
+
     body {
       overflow-y: auto;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     @media (min-width: 768px) {
@@ -70,25 +82,36 @@
       }
     }
 
-    /* TEXTURA DE FUNDO */
+    /* LADO ESQUERDO: Textura Papel Clean */
     .bg-texture {
       background-color: #F2F0EB;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
     }
 
-    /* STATES DE ANIMAÇÃO DE ENTRADA */
+    /* LADO DIREITO: Azul Monac com Luz */
+    .bg-monac-blue {
+      background: radial-gradient(circle at center, #0055EE 0%, #0047BB 60%, #003388 100%);
+    }
 
-    /* Painel Esquerdo: Começa ocupando 100% da largura (cobrindo o azul) */
+    /* TEXTURA GRANULADA (Visível mas elegante) */
+    .bg-noise-visible {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
+      opacity: 0.25;
+      /* 25% Opacidade = Visível */
+      mix-blend-mode: overlay;
+      /* Mistura com o azul para não ficar cinza */
+      pointer-events: none;
+    }
+
+    /* ANIMAÇÕES DE ENTRADA */
     #left-panel {
       width: 100%;
       z-index: 50;
       transition: width 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     }
 
-    /* Fim da animação: encolhe para 40% (PC) ou 100% (Mobile - altura ajusta) */
     body.intro-finished #left-panel {
       width: 100%;
-      /* Mobile default */
     }
 
     @media (min-width: 768px) {
@@ -97,27 +120,22 @@
       }
     }
 
-    /* Painel Direito (Azul): Começa escondido */
     #right-panel {
       transform: translateX(100%);
       transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
     }
 
-    /* Mobile: Começa escondido embaixo */
     @media (max-width: 767px) {
       #right-panel {
         transform: translateY(100%);
-        transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
       }
     }
 
-    /* Fim da animação: Painel Azul entra na tela */
     body.intro-finished #right-panel {
       transform: translateX(0);
       transform: translateY(0);
     }
 
-    /* ELEMENTOS QUE APARECEM DEPOIS (Delay) */
     .fade-in-delayed {
       opacity: 0;
       transform: translateY(20px);
@@ -130,33 +148,48 @@
       transform: translateY(0);
     }
 
-    /* INPUTS GLASS */
+    /* INPUTS (Estilo Glass que você gostou) */
     .input-glass {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
+      /* 10% Branco */
+      border: 1px solid rgba(255, 255, 255, 0.25);
       color: white;
       transition: all 0.3s ease;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     .input-glass:focus {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.8);
       outline: none;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+      /* Glow Branco */
     }
 
     .input-glass::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.6);
     }
 
-    /* LOADER DO BOTÃO */
+    /* Fix Autofill Amarelo */
+    .input-glass:-webkit-autofill,
+    .input-glass:-webkit-autofill:hover,
+    .input-glass:-webkit-autofill:focus,
+    .input-glass:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #0047BB inset !important;
+      /* Cor exata do fundo */
+      -webkit-text-fill-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    /* LOADER */
     .loader {
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
-      border-top: 3px solid #0047BB;
+      border-top: 3px solid #fff;
       width: 20px;
       height: 20px;
-      -webkit-animation: spin 1s linear infinite;
       animation: spin 1s linear infinite;
     }
 
@@ -178,9 +211,7 @@
 
     <div id="left-panel"
       class="bg-texture relative flex flex-col items-center justify-center py-20 px-6 md:p-12 border-b md:border-b-0 md:border-r border-atlas-ink/5 shrink-0 md:h-full">
-
       <div class="relative z-10 text-center flex flex-col items-center justify-center transition-all duration-1000">
-
         <div class="mb-6 md:mb-8 transition-transform duration-1000">
           <img src="logo-monac.png" alt="Monac" class="h-32 md:h-40 w-auto mx-auto drop-shadow-sm">
         </div>
@@ -203,7 +234,6 @@
             </span>
           </div>
         </div>
-
       </div>
 
       <div class="absolute bottom-6 text-[10px] text-atlas-ink/40 hidden md:block fade-in-delayed">
@@ -212,80 +242,104 @@
     </div>
 
     <div id="right-panel"
-      class="w-full md:w-[60%] bg-atlas-blue flex flex-col items-center justify-center py-16 px-6 md:p-12 md:h-full relative flex-grow">
+      class="w-full md:w-[60%] bg-monac-blue relative flex-grow flex flex-col items-center justify-center">
 
-      <div id="form-container" class="w-full max-w-sm flex flex-col justify-center fade-in-delayed">
+      <div class="absolute inset-0 bg-noise-visible z-0"></div>
 
-        <div class="text-center md:text-left mb-8">
-          <h2 class="text-2xl md:text-3xl font-semibold text-white mb-2 tracking-tight">Lista de Espera</h2>
-          <p class="text-white/70 text-sm leading-relaxed font-light">
-            Unificamos Financeiro e Estoque.<br> Cadastre-se para o lançamento.
-          </p>
+      <div class="relative z-10 w-full h-full flex flex-col items-center justify-center py-16 px-6 md:p-12">
+
+        <div id="form-container" class="w-full max-w-sm flex flex-col justify-center fade-in-delayed">
+
+          <div class="text-center md:text-left mb-8">
+            <h2 class="text-2xl md:text-3xl font-semibold text-white mb-2 tracking-tight">Lista de Espera</h2>
+            <p class="text-white/80 text-sm leading-relaxed font-light">
+              Unificamos Financeiro e Estoque.<br> Cadastre-se para o lançamento.
+            </p>
+          </div>
+
+          <form id="monac-form" class="space-y-4">
+            <input type="hidden" name="_subject" value="Novo Lead: Lista de Espera Monac">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+
+            <div>
+              <input type="text" name="empresa" required placeholder="Nome da Empresa" autocomplete="organization"
+                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+            </div>
+
+            <div>
+              <input type="email" name="email" required placeholder="Seu Melhor E-mail" autocomplete="email"
+                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+            </div>
+
+            <div>
+              <input type="tel" id="whatsapp-field" name="whatsapp" placeholder="WhatsApp (Opcional)" autocomplete="tel"
+                maxlength="15"
+                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" id="submit-btn"
+                class="w-full bg-white hover:bg-white/90 text-atlas-blue font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-xl mt-2 uppercase tracking-wide text-sm flex justify-center items-center group">
+                <span id="btn-text">Entrar na Lista de Espera</span>
+                <div id="btn-loader" class="loader hidden"></div>
+              </button>
+            </div>
+          </form>
+
+          <div class="mt-8 text-[10px] text-white/30 text-center md:hidden">
+            © 2026 Monac Sistemas
+          </div>
         </div>
 
-        <form id="monac-form" class="space-y-4">
-          <input type="hidden" name="_subject" value="Novo Lead: Lista de Espera Monac">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_captcha" value="false">
-
-          <div>
-            <input type="text" name="empresa" required placeholder="Ex: Monac Sistemas"
-              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+        <div id="success-message" class="hidden w-full max-w-sm flex-col items-center justify-center text-center">
+          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 animate-check shadow-2xl">
+            <svg class="w-10 h-10 text-atlas-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
           </div>
+          <h3 class="text-3xl font-serif italic text-white mb-2">Bem-vindo.</h3>
+          <p class="text-white/80 text-sm">Seu cadastro foi recebido com sucesso.<br>Em breve entraremos em contato.</p>
 
-          <div>
-            <input type="email" name="email" required placeholder="Seu Melhor E-mail"
-              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
-          </div>
-
-          <div>
-            <input type="tel" name="whatsapp" placeholder="WhatsApp (Opcional)"
-              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
-          </div>
-
-          <div class="pt-2">
-            <button type="submit" id="submit-btn"
-              class="w-full bg-white hover:bg-white/90 text-atlas-blue font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-xl mt-2 uppercase tracking-wide text-sm flex justify-center items-center group">
-              <span id="btn-text">Entrar na Lista de Espera</span>
-              <div id="btn-loader" class="loader hidden"></div>
-            </button>
-          </div>
-        </form>
-
-        <div class="mt-8 text-[10px] text-white/30 text-center md:hidden">
-          © 2026 Monac Sistemas
+          <a href="https://www.instagram.com/monac_sistemas/" target="_blank"
+            class="mt-8 inline-flex items-center space-x-2 text-white/60 hover:text-white transition-colors duration-300 border border-white/20 px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-white/10">
+            <span>Acompanhe no Instagram</span>
+          </a>
         </div>
 
       </div>
-
-      <div id="success-message" class="hidden w-full max-w-sm flex-col items-center justify-center text-center">
-        <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 animate-check shadow-2xl">
-          <svg class="w-10 h-10 text-atlas-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-          </svg>
-        </div>
-        <h3 class="text-3xl font-serif italic text-white mb-2">Bem-vindo.</h3>
-        <p class="text-white/80 text-sm">Seu cadastro foi recebido com sucesso.<br>Em breve entraremos em contato.</p>
-
-        <a href="https://www.instagram.com/monac_sistemas/" target="_blank"
-          class="mt-8 inline-flex items-center space-x-2 text-white/60 hover:text-white transition-colors duration-300 border border-white/20 px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-white/10">
-          <span>Acompanhe no Instagram</span>
-        </a>
-      </div>
-
     </div>
 
   </div>
 
   <script>
-    // Animação de Entrada
+    // 1. ANIMAÇÃO DE ENTRADA
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.body.classList.add('intro-finished');
       }, 500);
     });
 
-    // Envio AJAX
+    // 2. MÁSCARA TELEFONE (ESTÁVEL V4.5)
+    const phoneInput = document.getElementById('whatsapp-field');
+    phoneInput.addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 11) value = value.slice(0, 11);
+      if (value.length > 2) {
+        if (value.length > 10) {
+          value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+        } else if (value.length > 6) {
+          value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+        } else {
+          value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+        }
+      } else if (value.length > 0) {
+        value = `(${value}`;
+      }
+      e.target.value = value;
+    });
+
+    // 3. ENVIO AJAX
     const form = document.getElementById('monac-form');
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
@@ -295,36 +349,17 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-
       btnText.classList.add('hidden');
       btnLoader.classList.remove('hidden');
       submitBtn.disabled = true;
-
       const formData = new FormData(form);
-
-      fetch("https://formsubmit.co/ajax/monacsistemas@gmail.com", {
-        method: "POST",
-        body: formData
-      })
+      fetch("https://formsubmit.co/ajax/monacsistemas@gmail.com", { method: "POST", body: formData })
         .then(response => response.json())
         .then(data => {
-          formContainer.style.opacity = '0';
-          formContainer.style.transform = 'translateY(-20px)';
-          formContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-
-          setTimeout(() => {
-            formContainer.classList.add('hidden');
-            successMessage.classList.remove('hidden');
-            successMessage.classList.add('flex');
-          }, 500);
+          formContainer.style.opacity = '0'; formContainer.style.transform = 'translateY(-20px)'; formContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          setTimeout(() => { formContainer.classList.add('hidden'); successMessage.classList.remove('hidden'); successMessage.classList.add('flex'); }, 500);
         })
-        .catch(error => {
-          console.error('Erro:', error);
-          alert('Ocorreu um erro ao enviar. Tente novamente.');
-          btnText.classList.remove('hidden');
-          btnLoader.classList.add('hidden');
-          submitBtn.disabled = false;
-        });
+        .catch(error => { console.error('Erro:', error); alert('Ocorreu um erro ao enviar. Tente novamente.'); btnText.classList.remove('hidden'); btnLoader.classList.add('hidden'); submitBtn.disabled = false; });
     });
   </script>
 
