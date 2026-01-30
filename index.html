@@ -53,6 +53,14 @@
             fadeUp: {
               '0%': { opacity: '0', transform: 'translateY(20px)' },
               '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            gridMove: {
+              '0%': { backgroundPosition: '0 0' },
+              '100%': { backgroundPosition: '40px 40px' },
+            },
+            borderBeam: {
+              '0%': { backgroundPosition: '0% 50%' },
+              '100%': { backgroundPosition: '200% 50%' },
             }
           }
         }
@@ -85,16 +93,28 @@
       }
     }
 
-    /* TEXTURAS */
+    /* LADO ESQUERDO: Textura Papel Clean */
     .bg-texture {
       background-color: #F2F0EB;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
     }
 
+    /* LADO DIREITO: Azul Monac Base */
     .bg-monac-blue {
       background: radial-gradient(circle at center, #0055EE 0%, #0047BB 60%, #003388 100%);
     }
 
+    /* GRID "BLUEPRINT" */
+    .bg-grid-tech {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+    }
+
+    /* Textura de Ruído */
     .bg-noise-visible {
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3'/%3E%3C/svg%3E");
       opacity: 0.25;
@@ -135,7 +155,7 @@
       transform: translateY(0);
     }
 
-    /* CASCATA */
+    /* CASCATA (Stagger) */
     @keyframes fadeUpAnim {
       0% {
         opacity: 0;
@@ -180,23 +200,61 @@
       animation: fadeUpAnim 0.8s ease-out 1.6s forwards;
     }
 
-    /* INPUTS */
-    .input-glass {
+    /* INPUT BEAM (Correção do CSS Mask aqui) */
+    .input-wrapper {
+      position: relative;
+      border-radius: 0.5rem;
       background: rgba(255, 255, 255, 0.1);
+      transition: background 0.3s;
+    }
+
+    .input-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 0.6rem;
+      padding: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+      background-size: 200% 100%;
+
+      /* Padrão WebKit (Chrome/Safari) */
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+
+      /* Padrão Standard (Firefox/Futuro) */
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .input-wrapper:focus-within {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .input-wrapper:focus-within::before {
+      opacity: 1;
+      animation: borderBeam 2s linear infinite;
+    }
+
+    /* O Input Transparente */
+    .input-glass {
+      background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: white;
-      transition: all 0.3s ease;
+      width: 100%;
+      border-radius: 0.5rem;
       backdrop-filter: blur(8px);
       -webkit-appearance: none;
       appearance: none;
     }
 
     .input-glass:focus {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.8);
       outline: none;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-      transform: scale(1.01);
+      border-color: transparent;
     }
 
     .input-glass::placeholder {
@@ -223,7 +281,7 @@
       transform: translateY(0px);
     }
 
-    /* LOADER */
+    /* LOADER & TYPEWRITER */
     .loader {
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
@@ -243,7 +301,6 @@
       }
     }
 
-    /* CURSOR TYPEWRITER */
     .cursor-blink {
       display: inline-block;
       width: 2px;
@@ -307,6 +364,8 @@
     <div id="right-panel"
       class="w-full md:w-[60%] bg-monac-blue relative flex-grow flex flex-col items-center justify-center">
 
+      <div class="absolute inset-0 bg-grid-tech z-0"></div>
+
       <div class="absolute inset-0 bg-noise-visible z-0"></div>
 
       <div class="relative z-10 w-full h-full flex flex-col items-center justify-center py-16 px-6 md:p-12">
@@ -320,25 +379,24 @@
             </p>
           </div>
 
-          <form id="monac-form" class="space-y-4">
+          <form id="monac-form" class="space-y-5">
             <input type="hidden" name="_subject" value="Novo Lead: Lista de Espera Monac">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
 
-            <div class="stagger-item stagger-3">
+            <div class="stagger-item stagger-3 input-wrapper">
               <input type="text" name="empresa" required placeholder="Nome da Empresa" autocomplete="organization"
-                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+                class="input-glass px-4 py-4 rounded-lg text-sm">
             </div>
 
-            <div class="stagger-item stagger-4">
+            <div class="stagger-item stagger-4 input-wrapper">
               <input type="email" name="email" required placeholder="Seu Melhor E-mail" autocomplete="email"
-                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+                class="input-glass px-4 py-4 rounded-lg text-sm">
             </div>
 
-            <div class="stagger-item stagger-5">
+            <div class="stagger-item stagger-5 input-wrapper">
               <input type="tel" id="whatsapp-field" name="whatsapp" placeholder="WhatsApp (Opcional)" autocomplete="tel"
-                maxlength="15"
-                class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/30">
+                maxlength="15" class="input-glass px-4 py-4 rounded-lg text-sm">
             </div>
 
             <div class="pt-2 stagger-item stagger-6">
@@ -363,6 +421,7 @@
           </div>
           <h3 class="text-3xl font-serif italic text-white mb-2">Bem-vindo.</h3>
           <p class="text-white/80 text-sm">Seu cadastro foi recebido com sucesso.<br>Em breve entraremos em contato.</p>
+
           <a href="https://www.instagram.com/monac_sistemas/" target="_blank"
             class="mt-8 inline-flex items-center space-x-2 text-white/60 hover:text-white transition-colors duration-300 border border-white/20 px-6 py-2 rounded-full text-xs uppercase tracking-widest hover:bg-white/10">
             <span>Acompanhe no Instagram</span>
@@ -376,46 +435,32 @@
 
   <script>
     // 1. ANIMAÇÃO DE ENTRADA
-    window.addEventListener('load', () => {
-      setTimeout(() => { document.body.classList.add('intro-finished'); }, 500);
-    });
+    window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('intro-finished'); }, 500); });
 
-    // 2. TYPEWRITER EFFECT (Digitação)
+    // 2. TYPEWRITER
     const words = ["Estoque.", "Financeiro.", "Negócio."];
-    let i = 0;
-    let timer;
-
+    let i = 0; let timer;
     function typeWriter() {
       const element = document.getElementById("typewriter");
       const word = words[i];
       const current = element.innerHTML;
-
-      // Se não acabou de escrever a palavra
       if (current.length < word.length) {
         element.innerHTML += word.charAt(current.length);
-        timer = setTimeout(typeWriter, 100); // Velocidade digitação
-      } else {
-        // Espera um pouco antes de apagar
-        setTimeout(erase, 2000);
-      }
+        timer = setTimeout(typeWriter, 100);
+      } else { setTimeout(erase, 2000); }
     }
-
     function erase() {
       const element = document.getElementById("typewriter");
       const current = element.innerHTML;
-
       if (current.length > 0) {
         element.innerHTML = current.substring(0, current.length - 1);
-        timer = setTimeout(erase, 50); // Velocidade apagar
+        timer = setTimeout(erase, 50);
       } else {
-        i = (i + 1) % words.length; // Próxima palavra
+        i = (i + 1) % words.length;
         setTimeout(typeWriter, 500);
       }
     }
-
-    // Inicia o Typewriter após a animação de entrada
     setTimeout(typeWriter, 2000);
-
 
     // 3. MÁSCARA TELEFONE
     const phoneInput = document.getElementById('whatsapp-field');
