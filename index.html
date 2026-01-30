@@ -3,16 +3,15 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>Monac Sistemas - Em Breve</title>
+  <title>Monac Sistemas - Lista de Espera</title>
   <link rel="icon" type="image/png" href="/favicon-monac.png">
 
-  <meta name="description" content="Monac Sistemas - Soluções inteligentes para a gestão do seu negócio.">
+  <meta name="description" content="Monac Sistemas - Gestão Inteligente. Cadastre-se na lista de espera.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://monacsistemas.netlify.app/">
-  <meta property="og:title" content="Monac Sistemas - Em Breve">
-  <meta property="og:description" content="Sistema de Gestão Empresarial. O futuro da sua empresa começa aqui.">
+  <meta property="og:title" content="Monac - Lista de Espera">
   <meta property="og:image" content="https://monacsistemas.netlify.app/logo-monac.png">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -44,14 +43,31 @@
   </script>
 
   <style>
-    /* Permite rolagem vertical, bloqueia horizontal */
+    /* LÓGICA HÍBRIDA:
+      - Mobile: Altura mínima 100%, rolagem livre.
+      - Desktop (min-width: 768px): Altura fixa 100%, sem rolagem.
+    */
     html,
     body {
-      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    /* Padrão Mobile (com scroll) */
+    body {
+      overflow-y: auto;
       overflow-x: hidden;
     }
 
-    body {
+    /* Desktop (Travado) */
+    @media (min-width: 768px) {
+      body {
+        overflow: hidden;
+      }
+    }
+
+    /* Textura (Lado Esquerdo) */
+    .bg-texture {
       background-color: #F2F0EB;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
     }
@@ -60,7 +76,7 @@
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
       }
 
       to {
@@ -73,11 +89,11 @@
 
       0%,
       100% {
-        transform: translateY(0px);
+        transform: translateY(0px) rotate(45deg);
       }
 
       50% {
-        transform: translateY(-10px);
+        transform: translateY(-10px) rotate(45deg);
       }
     }
 
@@ -89,7 +105,7 @@
       }
 
       50% {
-        transform: translateY(-15px);
+        transform: translateY(-8px);
       }
     }
 
@@ -111,12 +127,7 @@
       opacity: 0;
     }
 
-    .delay-600 {
-      animation-delay: 0.6s;
-      opacity: 0;
-    }
-
-    /* Formas geométricas */
+    /* Formas Geométricas */
     .geometric-shape {
       position: absolute;
       border: 1px solid rgba(0, 71, 187, 0.08);
@@ -127,104 +138,132 @@
     .shape-1 {
       width: 120px;
       height: 120px;
-      top: 15%;
+      top: 10%;
       right: 10%;
       transform: rotate(45deg);
       animation: float 8s ease-in-out infinite;
     }
 
-    .shape-2 {
-      width: 160px;
-      height: 160px;
-      bottom: 20%;
-      left: 8%;
-      transform: rotate(30deg);
-      animation: float 10s ease-in-out infinite 2s;
+    /* Inputs "Glass" para fundo Azul */
+    .input-glass {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      transition: all 0.3s ease;
     }
 
-    .shape-3 {
-      width: 80px;
-      height: 80px;
-      top: 55%;
-      right: 12%;
-      transform: rotate(60deg);
-      animation: float 7s ease-in-out infinite 1s;
+    .input-glass:focus {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      outline: none;
     }
 
-    @media (max-width: 768px) {
-      .shape-3 {
-        display: none;
-      }
+    .input-glass::placeholder {
+      color: rgba(255, 255, 255, 0.4);
     }
   </style>
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased text-atlas-ink bg-atlas-paper">
 
-  <div class="geometric-shape shape-1"></div>
-  <div class="geometric-shape shape-2"></div>
-  <div class="geometric-shape shape-3"></div>
+  <div class="min-h-screen md:h-full w-full flex flex-col md:flex-row">
 
-  <div class="min-h-screen flex flex-col items-center justify-center px-6 py-10 relative z-10">
+    <div
+      class="w-full md:w-[40%] bg-texture relative flex flex-col items-center justify-center py-20 px-6 md:p-12 border-b md:border-b-0 md:border-r border-atlas-ink/5 shrink-0 md:h-full">
 
-    <div class="mb-12 md:mb-16 animate-fade-in animate-logo-float">
-      <img src="logo-monac.png" alt="Monac" class="h-32 md:h-40 w-auto mx-auto">
-    </div>
+      <div class="geometric-shape shape-1"></div>
 
-    <div class="max-w-4xl mx-auto text-center mb-16">
-      <div class="animate-fade-in delay-200">
-        <span
-          class="inline-block px-4 py-2 text-xs font-medium tracking-wider uppercase border border-atlas-blue/20 text-atlas-blue mb-6 md:mb-8">
-          Sistema de Gestão Empresarial
-        </span>
-      </div>
+      <div class="relative z-10 text-center animate-fade-in flex flex-col items-center justify-center">
 
-      <h1 class="animate-fade-in delay-400 mb-8 md:mb-12">
-        <span class="block text-4xl md:text-6xl lg:text-7xl font-light text-atlas-ink mb-2">
-          Monac
-        </span>
-        <span class="block text-4xl md:text-6xl lg:text-7xl font-serif italic text-atlas-blue">
-          Sistemas.
-        </span>
-      </h1>
+        <div class="mb-6 md:mb-8 animate-logo-float">
+          <img src="logo-monac.png" alt="Monac" class="h-24 md:h-32 w-auto mx-auto drop-shadow-sm">
+        </div>
 
-      <div class="flex justify-center my-6 md:my-8 animate-fade-in delay-600">
-        <div class="w-20 md:w-24 h-px bg-atlas-blue/30"></div>
-      </div>
+        <div>
+          <h1 class="flex flex-col items-center justify-center">
+            <span class="text-4xl md:text-5xl font-light text-atlas-ink mb-1 md:mb-2">Monac</span>
+            <span class="text-4xl md:text-5xl font-serif italic text-atlas-blue">Sistemas.</span>
+          </h1>
+        </div>
 
-      <div class="animate-fade-in delay-600 mb-8 md:mb-10">
         <div
-          class="inline-flex items-center space-x-3 px-5 py-2.5 bg-white/50 backdrop-blur-sm border border-atlas-blue/10 rounded-full">
-          <span class="relative flex h-2.5 w-2.5">
+          class="mt-8 inline-flex items-center space-x-2 px-4 py-1.5 bg-white/60 backdrop-blur-sm border border-atlas-blue/10 rounded-full">
+          <span class="relative flex h-2 w-2">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-atlas-blue opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-atlas-blue"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-atlas-blue"></span>
           </span>
-          <span class="text-xs md:text-sm font-medium text-atlas-ink">
+          <span class="text-xs font-medium text-atlas-ink uppercase tracking-wider">
             Lançamento em breve
           </span>
         </div>
+
       </div>
 
-      <div class="animate-fade-in delay-600">
-        <p class="text-sm text-atlas-ink/60 mb-3">
-          Nos acompanhe no Instagram
-        </p>
-        <a href="https://instagram.com/monac.sistemas" target="_blank" rel="noopener noreferrer"
-          class="inline-flex items-center space-x-2 px-6 py-2.5 border border-atlas-ink/20 text-atlas-ink hover:bg-atlas-ink hover:text-atlas-paper hover:border-atlas-ink transition-all duration-300 rounded-full text-sm font-medium group">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-          </svg>
-          <span>@monac.sistemas</span>
-        </a>
+      <div class="absolute bottom-6 text-[10px] text-atlas-ink/40 hidden md:block">
+        © 2026 Monac Sistemas
       </div>
-
     </div>
 
-    <div class="absolute bottom-6 left-0 right-0 animate-fade-in delay-600">
-      <p class="text-center text-xs md:text-sm text-atlas-ink/50">
-        © 2026 Monac. Todos os direitos reservados.
-      </p>
+    <div
+      class="w-full md:w-[60%] bg-atlas-blue flex flex-col items-center justify-center py-16 px-6 md:p-12 md:h-full relative flex-grow">
+
+      <div class="w-full max-w-sm animate-fade-in delay-200 flex flex-col justify-center">
+
+        <div class="text-center md:text-left mb-8">
+          <h2 class="text-2xl md:text-3xl font-semibold text-white mb-2">Lista de Espera</h2>
+          <p class="text-white/70 text-sm leading-relaxed">
+            Unificamos Financeiro e Estoque.<br> Cadastre-se para o lançamento.
+          </p>
+        </div>
+
+        <form action="https://formsubmit.co/monacsistemas@gmail.com" method="POST" class="space-y-4">
+
+          <input type="hidden" name="_subject" value="Novo Lead: Lista de Espera Monac">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://monacsistemas.netlify.app/">
+
+          <div>
+            <input type="text" name="empresa" required placeholder="Ex: Monac Sistemas"
+              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/20">
+          </div>
+
+          <div>
+            <input type="email" name="email" required placeholder="Seu Melhor E-mail"
+              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/20">
+          </div>
+
+          <div>
+            <input type="tel" name="whatsapp" placeholder="WhatsApp (Opcional)"
+              class="input-glass w-full px-4 py-4 rounded-lg text-sm placeholder-white/50 focus:placeholder-white/20">
+          </div>
+
+          <button type="submit"
+            class="w-full bg-white hover:bg-white/90 text-atlas-blue font-bold py-4 px-6 rounded-lg transition-all duration-300 shadow-lg mt-4 uppercase tracking-wide text-sm flex justify-center items-center group">
+            <span>Entrar na Lista de Espera</span>
+            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </button>
+        </form>
+
+        <div class="mt-10 flex justify-center md:justify-start">
+          <a href="https://www.instagram.com/monac_sistemas/" target="_blank"
+            class="inline-flex items-center space-x-2 text-white/60 hover:text-white transition-colors duration-300 py-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
+            <span class="text-xs font-medium tracking-wide">@monac_sistemas</span>
+          </a>
+        </div>
+
+        <div class="mt-8 text-[10px] text-white/30 text-center md:hidden">
+          © 2026 Monac Sistemas
+        </div>
+
+      </div>
     </div>
 
   </div>
