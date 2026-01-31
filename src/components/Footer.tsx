@@ -1,4 +1,4 @@
-import { Instagram, Linkedin, Facebook, Phone } from "lucide-react";
+import { Instagram, Linkedin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -10,25 +10,34 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Coluna 1: Logo e Endereço */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
-              <div className="h-6 w-6 bg-monac-ink rounded flex items-center justify-center text-white font-bold text-sm">
-                M
-              </div>
+            <div className="flex items-center gap-3 opacity-50 hover:opacity-100 transition-opacity">
+              {/* LOGO ATUALIZADA */}
+              <img
+                src="/favicon-monac.png"
+                alt="Monac Logo"
+                className="h-8 w-8 object-contain"
+              />
               <span className="font-bold text-lg text-monac-ink">Monac</span>
             </div>
             <div className="text-sm text-monac-ink/60 space-y-1">
               <p>Manhuaçu — Minas Gerais</p>
-              <p>CNPJ: 59.088.662/0001-57</p>
             </div>
             <div className="flex gap-4 text-monac-ink/40">
-              <a href="#" className="hover:text-monac-blue transition-colors">
+              <a
+                href="https://www.instagram.com/monac_sistemas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-monac-blue transition-colors"
+              >
                 <Instagram size={20} />
               </a>
-              <a href="#" className="hover:text-monac-blue transition-colors">
+              <a
+                href="https://www.linkedin.com/company/monac-sistemas/about/?viewAsMember=true"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-monac-blue transition-colors"
+              >
                 <Linkedin size={20} />
-              </a>
-              <a href="#" className="hover:text-monac-blue transition-colors">
-                <Facebook size={20} />
               </a>
             </div>
           </div>
@@ -75,23 +84,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-monac-blue">
-                  Carreiras
-                </a>
-              </li>
-              <li>
                 <a href="#academy" className="hover:text-monac-blue">
                   Monac Academy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-monac-blue">
-                  Política de Privacidade
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-monac-blue">
-                  Termos de Uso
                 </a>
               </li>
             </ul>
@@ -121,7 +115,12 @@ export function Footer() {
                   (33) 98428-6959
                 </a>
               </li>
-              <li className="pt-2 text-xs opacity-50">contato@monac.com.br</li>
+              <li className="flex items-center gap-2 pt-2 opacity-80 hover:opacity-100 hover:text-monac-blue transition-colors">
+                <Mail size={14} />
+                <a href="mailto:monacsistemas@gmail.com">
+                  monacsistemas@gmail.com
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -131,7 +130,9 @@ export function Footer() {
             © {new Date().getFullYear()} Monac Sistemas. Todos os direitos
             reservados.
           </p>
-          <p>Feito com tecnologia e café em Minas Gerais.</p>
+          <p className="font-medium">
+            Desenvolvido em Minas Gerais para todo o Brasil.
+          </p>
         </div>
       </div>
     </footer>
