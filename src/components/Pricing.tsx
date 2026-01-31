@@ -1,187 +1,179 @@
-import { useState } from "react";
+import { Check, ArrowRight, Star, Zap, Building } from "lucide-react";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Plus, HelpCircle } from "lucide-react";
+
+const plans = [
+  {
+    name: "Start",
+    icon: Zap,
+    target: "Comércio e Pequenos Negócios",
+    price: "R$ 199,90",
+    period: "/mês",
+    description:
+      "O essencial para vender rápido, emitir notas e organizar o estoque sem complicações.",
+    features: [
+      "Emissor de NF-e e NFC-e Ilimitado",
+      "Controle de Estoque Básico",
+      "PDV Frente de Caixa (Offline)",
+      "Cadastro de Clientes e Produtos",
+      "Suporte via Chat",
+    ],
+    cta: "Começar Agora",
+    highlight: false,
+    buttonStyle:
+      "border border-monac-ink/10 text-monac-ink hover:bg-monac-ink/5",
+  },
+  {
+    name: "Pro",
+    icon: Star,
+    target: "Gestão Completa",
+    price: "Sob Consulta",
+    period: "",
+    description:
+      "Inteligência financeira, relatórios de performance e controle total para quem quer crescer.",
+    features: [
+      "Tudo do plano Start",
+      "Gestão Financeira (Fluxo de Caixa)",
+      "DRE Gerencial e Boletos",
+      "Contas a Pagar e Receber",
+      "Suporte Prioritário (WhatsApp)",
+    ],
+    cta: "Agendar Demonstração",
+    highlight: true, // ESTE É O FOCO
+    buttonStyle:
+      "bg-monac-blue text-white hover:bg-monac-darkBlue shadow-lg shadow-monac-blue/20",
+  },
+  {
+    name: "Enterprise",
+    icon: Building,
+    target: "Indústrias e Logística",
+    price: "Sob Medida",
+    period: "",
+    description:
+      "Módulos avançados de produção, logística e personalizações para operações complexas.",
+    features: [
+      "Tudo do plano Pro",
+      "Ordem de Produção (OP)",
+      "Gestão de Lotes e Validade",
+      "App de Separação e Expedição",
+      "Gerente de Conta Exclusivo",
+    ],
+    cta: "Falar com um Sócio",
+    highlight: false,
+    buttonStyle: "bg-monac-ink text-white hover:bg-black",
+  },
+];
 
 export function Pricing() {
-    const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  return (
+    <section
+      id="pricing"
+      className="py-24 bg-monac-paper relative overflow-hidden"
+    >
+      <div className="max-w-[1200px] mx-auto px-6 lg:px-12 relative z-10">
+        {/* Cabeçalho */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-monac-blue mb-4 block">
+            Investimento
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-monac-ink mb-6">
+            Escolha o plano ideal para o seu momento.
+          </h2>
+          <p className="text-monac-ink/60 text-lg">
+            Transparência total. Sem taxas escondidas de implantação surpresa.
+          </p>
+        </div>
 
-    const handleBuy = (planName: string) => {
-        const cycle = billing === "monthly" ? "Mensal" : "Anual (com desconto)";
-        const text = `Olá! Tenho interesse no plano *${planName}* (${cycle}) do Atlas ERP.`;
-        window.open(`https://wa.me/5533999999999?text=${encodeURIComponent(text)}`, '_blank');
-    };
-
-    const plans = [
-        {
-            name: "Standard",
-            priceMonthly: 149.90,
-            priceYearly: 119.90,
-            target: "Pequenos Negócios",
-            desc: "O essencial para estar em dia com o fisco e organizar a casa.",
-            features: ["1 Usuário", "Emissão Fiscal (NF-e/NFC-e)", "Suporte Chat/Email", "Gestão de Vendas Simples"],
-            highlight: false
-        },
-        {
-            name: "Pro",
-            priceMonthly: 289.90,
-            priceYearly: 229.90,
-            target: "Negócios em Crescimento",
-            desc: "Controle total: Financeiro, Estoque real e Inteligência de vendas.",
-            features: ["Até 3 Usuários", "Financeiro Completo (DRE)", "Controle de Estoque Real", "Suporte Prioritário WhatsApp"],
-            highlight: true
-        },
-        {
-            name: "Premium",
-            priceMonthly: 549.90,
-            priceYearly: 439.90,
-            target: "Redes e Alta Demanda",
-            desc: "Para quem não pode parar. Multi-estoque e gestão avançada.",
-            features: ["Usuários Ilimitados", "Multi-estoque (Loja + Depósito)", "Gestão de Comissão", "Backup em Tempo Real"],
-            highlight: false
-        }
-    ];
-
-    return (
-        <section id="pricing" className="py-24 md:py-32 border-t border-atlas-ink/5 bg-atlas-paper">
-            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-
-                <div className="mb-12 text-center max-w-2xl mx-auto">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-atlas-blue mb-4 block">
-                        Planos Transparentes
-                    </span>
-                    <h2 className="text-3xl md:text-5xl font-light text-atlas-ink mb-8">
-                        Investimento que se paga no <span className="font-serif italic text-atlas-blue">primeiro mês</span>.
-                    </h2>
-
-                    {/* SWITCH MENSAL / ANUAL */}
-                    <div className="flex items-center justify-center gap-4 select-none">
-                        <span
-                            onClick={() => setBilling("monthly")}
-                            className={`text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors ${billing === "monthly" ? "text-atlas-ink" : "text-atlas-ink/40"}`}
-                        >
-                            Mensal
-                        </span>
-
-                        <button
-                            onClick={() => setBilling(billing === "monthly" ? "yearly" : "monthly")}
-                            className="w-14 h-8 bg-atlas-ink rounded-full p-1 relative transition-colors cursor-pointer"
-                        >
-                            <motion.div
-                                animate={{ x: billing === "monthly" ? 0 : 24 }}
-                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                className="w-6 h-6 bg-white rounded-full shadow-md"
-                            />
-                        </button>
-
-                        <span
-                            onClick={() => setBilling("yearly")}
-                            className={`text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors ${billing === "yearly" ? "text-atlas-ink" : "text-atlas-ink/40"}`}
-                        >
-                            Anual <span className="text-atlas-blue text-[9px] ml-1 bg-atlas-blue/10 px-1 py-0.5 rounded">-20%</span>
-                        </span>
-                    </div>
+        {/* Grid de Planos */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          {plans.map((plan, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className={`relative rounded-3xl p-8 flex flex-col h-full ${
+                plan.highlight
+                  ? "bg-white border-2 border-monac-blue shadow-2xl scale-105 z-10"
+                  : "bg-white border border-monac-ink/5 shadow-sm hover:shadow-xl transition-shadow"
+              }`}
+            >
+              {/* Badge de Recomendado (Só no Pro) */}
+              {plan.highlight && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-monac-blue text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-md">
+                  Mais Escolhido
                 </div>
+              )}
 
-                {/* CARDS */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-20">
-                    {plans.map((plan, i) => (
-                        <motion.div
-                            key={i}
-                            layout
-                            className={`relative p-8 flex flex-col justify-between border rounded-sm transition-all duration-300 ${plan.highlight
-                                    ? "bg-atlas-blue text-white border-atlas-blue shadow-2xl shadow-atlas-blue/20 transform md:-translate-y-4"
-                                    : "bg-white border-atlas-ink/10 text-atlas-ink hover:border-atlas-blue/30"
-                                }`}
-                        >
-                            <div>
-                                <div className={`mb-4 text-[10px] font-bold uppercase tracking-widest ${plan.highlight ? "text-white/70" : "text-atlas-ink/40"}`}>
-                                    {plan.target}
-                                </div>
-                                <h3 className="text-3xl font-light mb-4">{plan.name}</h3>
-                                <div className="mb-4 h-16">
-                                    <span className={`block text-[10px] uppercase tracking-widest mb-1 ${plan.highlight ? "text-white/60" : "text-atlas-ink/40"}`}>
-                                        A partir de
-                                    </span>
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-sm opacity-60">R$</span>
-                                        <span className="text-4xl font-semibold tracking-tight">
-                                            {billing === "monthly"
-                                                ? plan.priceMonthly.toFixed(2).replace('.', ',')
-                                                : plan.priceYearly.toFixed(2).replace('.', ',')
-                                            }
-                                        </span>
-                                        <span className="text-sm opacity-60">/mês</span>
-                                    </div>
-                                    {billing === "yearly" && (
-                                        <motion.div
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            className={`text-[10px] line-through opacity-50 ${plan.highlight ? "text-white" : "text-atlas-ink"}`}
-                                        >
-                                            de R$ {plan.priceMonthly.toFixed(2).replace('.', ',')}
-                                        </motion.div>
-                                    )}
-                                </div>
-                                <p className={`text-xs mb-8 leading-relaxed ${plan.highlight ? "text-white/80" : "text-atlas-ink/60"}`}>{plan.desc}</p>
-                                <div className="w-full h-px bg-current opacity-10 mb-8"></div>
-                                <ul className="space-y-3 mb-10">
-                                    {plan.features.map((feat, j) => (
-                                        <li key={j} className="flex items-start gap-3 text-sm">
-                                            <Check size={14} className={`mt-0.5 flex-shrink-0 ${plan.highlight ? "text-white" : "text-atlas-blue"}`} />
-                                            <span className="opacity-90">{feat}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <button
-                                onClick={() => handleBuy(plan.name)}
-                                className={`w-full py-4 text-xs font-bold uppercase tracking-[0.2em] border transition-colors flex items-center justify-center gap-2 group rounded-sm cursor-pointer ${plan.highlight
-                                        ? "bg-white text-atlas-blue border-white hover:bg-atlas-paper"
-                                        : "bg-transparent border-atlas-ink/20 hover:border-atlas-blue hover:text-atlas-blue"
-                                    }`}>
-                                CONTRATAR AGORA
-                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
-                        </motion.div>
-                    ))}
+              {/* Título e Ícone */}
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className={`p-2 rounded-lg ${plan.highlight ? "bg-monac-blue/10 text-monac-blue" : "bg-gray-100 text-gray-500"}`}
+                >
+                  <plan.icon size={20} />
                 </div>
+                <h3 className="text-xl font-bold text-monac-ink">
+                  {plan.name}
+                </h3>
+              </div>
 
-                {/* EXTRAS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div className="bg-atlas-ink/[0.02] border border-atlas-ink/10 p-6 md:p-8 rounded-sm">
-                        <div className="flex items-center gap-3 mb-4 text-atlas-ink">
-                            <Plus size={20} className="text-atlas-blue" />
-                            <h4 className="text-lg font-medium">Taxa de Implantação (Setup)</h4>
-                        </div>
-                        <p className="text-sm text-atlas-ink/60 mb-6">
-                            Instalação de certificado digital, configuração tributária (CFOP, ICMS) e treinamento da equipe.
-                        </p>
-                        <div className="flex justify-between items-center text-sm border-t border-atlas-ink/10 pt-4">
-                            <span>Setup Padrão</span>
-                            <span className="font-bold">R$ 800,00</span>
-                        </div>
-                    </div>
+              {/* Preço */}
+              <div className="mb-2">
+                <span className="text-3xl font-bold text-monac-ink">
+                  {plan.price}
+                </span>
+                <span className="text-sm text-monac-ink/50 font-medium">
+                  {plan.period}
+                </span>
+              </div>
+              <p className="text-xs font-bold uppercase tracking-wider text-monac-blue mb-6">
+                {plan.target}
+              </p>
 
-                    <div className="bg-atlas-ink/[0.02] border border-atlas-ink/10 p-6 md:p-8 rounded-sm">
-                        <div className="flex items-center gap-3 mb-4 text-atlas-ink">
-                            <HelpCircle size={20} className="text-atlas-blue" />
-                            <h4 className="text-lg font-medium">Módulos Especialistas</h4>
-                        </div>
-                        <p className="text-sm text-atlas-ink/60 mb-6">
-                            Funcionalidades para nichos regulados.
-                        </p>
-                        <div className="flex justify-between items-center text-sm border-t border-atlas-ink/10 pt-4">
-                            <span className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 bg-atlas-blue rounded-full"></span>
-                                Farmácias (SNGPC)
-                            </span>
-                            <span className="font-bold text-atlas-ink">+ R$ 150,00<span className="text-[10px] font-normal opacity-60">/mês</span></span>
-                        </div>
-                    </div>
-                </div>
+              <p className="text-sm text-monac-ink/60 leading-relaxed mb-8 min-h-[60px]">
+                {plan.description}
+              </p>
 
-            </div>
-        </section>
-    );
+              {/* Lista de Features */}
+              <ul className="space-y-4 mb-8 flex-1">
+                {plan.features.map((feature, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 text-sm text-monac-ink/80"
+                  >
+                    <Check
+                      size={16}
+                      className={`flex-shrink-0 mt-0.5 ${plan.highlight ? "text-monac-blue" : "text-gray-400"}`}
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Botão de Ação */}
+              <button
+                onClick={() =>
+                  window.open("https://wa.me/5533999999999", "_blank")
+                }
+                className={`w-full h-12 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 ${plan.buttonStyle}`}
+              >
+                {plan.cta}
+                <ArrowRight size={14} />
+              </button>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FAQ Rápido / Garantia */}
+        <div className="mt-16 text-center border-t border-monac-ink/5 pt-8">
+          <p className="text-sm text-monac-ink/50">
+            Precisa de uma negociação especial para rede de lojas?{" "}
+            <a href="#" className="text-monac-blue font-bold hover:underline">
+              Fale com nossa diretoria.
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
 }
