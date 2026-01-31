@@ -1,73 +1,55 @@
-# React + TypeScript + Vite
+# 🏛️ MONAC | Institutional Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A interface pública e portal de vendas do ecossistema Monac ERP.
+> **Status:** 🟡 Pre-Launch (Target: Junho/2026)
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📋 Sobre o Projeto
 
-## React Compiler
+Este repositório contém o código-fonte da Landing Page de alta performance da Monac Sistemas. O projeto foi desenvolvido com foco em:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Performance:** Carregamento instantâneo (Vite + SPA).
+- **SEO:** Estrutura semântica e meta-tags otimizadas para "ERP", "Gestão" e "NF-e".
+- **UX/UI:** Design System próprio ("Monac Enterprise") com animações fluidas via Framer Motion.
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Core:** [React 18](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Estilização:** [Tailwind CSS](https://tailwindcss.com/)
+- **Animações:** [Framer Motion](https://www.framer.com/motion/)
+- **Ícones:** [Lucide React](https://lucide.dev/)
+- **Deploy:** Netlify / Vercel (CI/CD Automático)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🎨 Design System & Tokens
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+As cores e fontes estão centralizadas no `tailwind.config.js`.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| Token                | Hex       | Uso Principal                       |
+| :------------------- | :-------- | :---------------------------------- |
+| **`monac-blue`**     | `#0047BB` | Brand Color, CTAs Primários, Links  |
+| **`monac-darkBlue`** | `#003388` | Hover States, Gradientes Profundos  |
+| **`monac-ink`**      | `#101820` | Títulos, Textos, Navbar, Footer     |
+| **`monac-paper`**    | `#F2F0EB` | Backgrounds Secundários (Off-white) |
+| **`font-sans`**      | `Inter`   | Tipografia Geral                    |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📂 Arquitetura do Projeto
+
+A estrutura foi limpa para manter apenas componentes essenciais em produção.
+
+```text
+src/
+├── components/          # Componentes Isolados (Atomic Design simplificado)
+│   ├── Navbar.tsx       # Mega Menu Responsivo
+│   ├── Platform.tsx     # Interactive Deck (Feature Showcase)
+│   ├── Pricing.tsx      # Tabela de Planos (Start/Pro/Enterprise)
+│   ├── ...              # Outros blocos (Hero, Founders, etc)
+├── index.css            # Diretivas Tailwind + Custom Textures (.bg-tech-grid)
+├── App.tsx              # Orquestrador das seções e IDs de navegação
+└── main.tsx             # Entry Point
 ```
