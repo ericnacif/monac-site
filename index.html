@@ -4,56 +4,112 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/png" href="/favicon-monac.png?v=2" />
-    <title>Monac ERP | O Sistema Operacional da sua Empresa</title>
+    <title>Monac ERP — O Sistema Operacional da sua Empresa</title>
     <meta
       name="description"
-      content="Elimine planilhas e assuma o controle. ERP completo para Indústria, Varejo e Serviços. Emissor de Notas, Financeiro e Estoque integrados em um só lugar."
+      content="Gerencie vendas, estoque, finanças e emissão fiscal em um só lugar. O ERP mais completo para pequenas e médias empresas brasileiras."
     />
     <meta
       name="keywords"
-      content="ERP, Sistema de Gestão, Emissor NF-e, Controle de Estoque, Financeiro, Manhuaçu, Software de Gestão, Monac"
+      content="ERP, sistema de gestão, NF-e, controle de estoque, financeiro, varejo, indústria, distribuidora"
     />
     <meta name="author" content="Monac Sistemas" />
+    <meta name="theme-color" content="#0047BB" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://monac.com.br/" />
-    <meta property="og:title" content="Monac ERP | O Sistema Operacional da sua Empresa" />
-    <meta property="og:description" content="Gestão financeira, fiscal e de estoque sem complicações. Teste a plataforma que está mudando o mercado." />
-    <meta property="og:image" content="/og-image.jpg" />
+    <meta
+      property="og:title"
+      content="Monac ERP — O Sistema Operacional da sua Empresa"
+    />
+    <meta
+      property="og:description"
+      content="Gerencie vendas, estoque, finanças e fiscal em um só lugar. Implantação rápida, suporte humano."
+    />
+    <meta property="og:image" content="https://monac.com.br/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Monac ERP — Dashboard de gestão empresarial"
+    />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Monac ERP" />
 
-    <!-- Google Fonts: Poppins (corpo/subtítulos) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Monac ERP — O Sistema Operacional da sua Empresa"
+    />
+    <meta
+      name="twitter:description"
+      content="Gerencie vendas, estoque, finanças e fiscal em um só lugar."
+    />
+    <meta name="twitter:image" content="https://monac.com.br/og-image.png" />
+
+    <link rel="canonical" href="https://monac.com.br/" />
+
+    <link rel="icon" type="image/png" href="/favicon-monac.png" />
+    <link rel="apple-touch-icon" href="/favicon-monac.png" />
+    <link rel="manifest" href="/manifest.json" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,900;1,300&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Glacial Indifference via CDN (para números) -->
     <style>
       @font-face {
-        font-family: 'Glacial Indifference';
-        src: url('https://cdn.jsdelivr.net/gh/KaterinaLupacheva/fonts@master/GlacialIndifference-Regular.otf') format('opentype');
+        font-family: "Glacial Indifference";
+        src: url("https://fonts.cdnfonts.com/s/16119/GlacialIndifference-Regular.woff")
+          format("woff");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
       }
-
-      /* Century Gothic fallback — será aplicada via font-family na config */
-      :root {
-        --font-heading: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
-        --font-body: 'Poppins', sans-serif;
-        --font-numbers: 'Glacial Indifference', 'Outfit', sans-serif;
-
-        /* Paleta Monac */
-        --monac-blue: #0047BB;
-        --monac-dark-blue: #003388;
-        --monac-ink: #101820;
-        --monac-paper: #F2F0EB;
-        --monac-gray: #D4D4D8;
-      }
     </style>
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("monac-theme");
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Monac ERP",
+        "description": "Sistema de gestão empresarial completo para PMEs brasileiras",
+        "url": "https://monac.com.br",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "offers": {
+          "@type": "Offer",
+          "price": "199.90",
+          "priceCurrency": "BRL"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Monac Sistemas",
+          "url": "https://monac.com.br",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+55-33-99708-8999",
+            "contactType": "customer service"
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

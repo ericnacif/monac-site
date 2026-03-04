@@ -1,321 +1,456 @@
-import { useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  TrendingUp,
-  FileCheck,
-  Package,
-  Wallet,
-  AlertTriangle,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import type { Variants } from "framer-motion";
+import { ArrowRight, Play, TrendingUp, ShieldCheck, Zap } from "lucide-react";
+import { openWhatsApp } from "../config";
+
+const pills = [
+  { icon: ShieldCheck, text: "100% Compliance Fiscal" },
+  { icon: Zap, text: "30s para emitir NF-e" },
+  { icon: TrendingUp, text: "+15% na margem" },
+];
+
+const dashboardTabs = ["Financeiro", "Estoque", "Vendas"] as const;
+type Tab = (typeof dashboardTabs)[number];
+
+const tabData: Record<
+  Tab,
+  { bars: number[]; label: string; value: string; trend: string }
+> = {
+  Financeiro: {
+    bars: [40, 65, 50, 80, 60, 90, 75],
+    label: "Saldo líquido",
+    value: "R$ 142.590",
+    trend: "+12%",
+  },
+  Estoque: {
+    bars: [70, 45, 80, 55, 90, 60, 85],
+    label: "Giro de estoque",
+    value: "847 SKUs",
+    trend: "-3 críticos",
+  },
+  Vendas: {
+    bars: [55, 70, 45, 85, 65, 95, 80],
+    label: "Ticket médio",
+    value: "R$ 1.240",
+    trend: "+8%",
+  },
+};
+
+// Tipagem rigorosa para evitar que o TS leia como um simples array de números (number[])
+const cinematicEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Hero() {
-  const [activeTab, setActiveTab] = useState<"vendas" | "estoque" | "financeiro">("vendas");
+  const ref = useRef(null);
+  const containerRef = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const [activeTab, setActiveTab] = useState<Tab>("Financeiro");
 
-  const tabData = {
-    vendas: {
-      accentColor: "bg-monac-blue",
-      metricTitle: "Faturamento (Hoje)",
-      metricValue: "R$ 14.590",
-      growth: "+12%",
-      chartHeights: ["30%", "55%", "45%", "85%"],
-      card1: { icon: TrendingUp, title: "Nova Venda", value: "R$ 850,00 (Pix)", color: "text-green-600", bg: "bg-green-100" },
-      card2: { icon: FileCheck, title: "NF-e Emitida", value: "#4092 - Cliente A", color: "text-monac-blue", bg: "bg-monac-blue/10" },
-    },
-    estoque: {
-      accentColor: "bg-amber-500",
-      metricTitle: "Itens em Alerta",
-      metricValue: "2 Produtos",
-      growth: "Ação Necessária",
-      chartHeights: ["60%", "75%", "20%", "50%"],
-      card1: { icon: Package, title: "Entrada de Merc.", value: "+150 Unidades", color: "text-monac-ink", bg: "bg-monac-ink/10" },
-      card2: { icon: AlertTriangle, title: "Estoque Baixo", value: "Repor: Cimento CP-II", color: "text-amber-600", bg: "bg-amber-100" },
-    },
-    financeiro: {
-      accentColor: "bg-indigo-500",
-      metricTitle: "Fluxo de Caixa Previsto",
-      metricValue: "R$ 42.100",
-      growth: "Positivo",
-      chartHeights: ["40%", "30%", "60%", "70%"],
-      card1: { icon: Wallet, title: "Contas a Receber", value: "R$ 5.200 (Hoje)", color: "text-indigo-600", bg: "bg-indigo-100" },
-      card2: { icon: TrendingUp, title: "Meta Mensal", value: "82% Atingida", color: "text-green-600", bg: "bg-green-100" },
-    },
-  };
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const current = tabData[activeTab];
 
-  return (
-    <section className="relative pt-32 lg:pt-48 pb-20 lg:pb-32 px-6 lg:px-12 max-w-[1400px] mx-auto overflow-hidden">
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1 } },
+  };
 
-      {/* Decoração de fundo — círculo azul sutil */}
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: cinematicEase },
+    },
+  };
+
+  return (
+    <section
+      ref={containerRef}
+      className="relative min-h-[100svh] flex items-center overflow-hidden bg-white dark:bg-[#080d14]"
+      aria-label="Seção principal"
+    >
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{ y }}
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(16,24,32,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(16,24,32,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:60px_60px]" />
+
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,71,187,0.15),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,71,187,0.25),transparent)]" />
+
+        <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-monac-blue/10 blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-monac-blue/5 blur-[80px]" />
+      </motion.div>
+
       <div
-        className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, rgba(0,71,187,0.05) 0%, transparent 70%)",
-          transform: "translate(20%, -20%)",
-        }}
+        className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-monac-blue/20 dark:via-monac-blue/40 to-transparent"
+        aria-hidden="true"
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-
-        {/* LADO ESQUERDO */}
-        <div className="lg:col-span-6 relative z-10 flex flex-col gap-8">
-
-          {/* Badge de lançamento */}
+      <motion.div
+        ref={ref}
+        style={{ opacity }}
+        className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-32 pb-16 lg:pt-36 lg:pb-24 w-full relative z-10"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="brand-pill w-fit"
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="lg:col-span-6 space-y-7"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-monac-blue opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-monac-blue"></span>
-            </span>
-            Monac ERP 2026
-          </motion.div>
-
-          {/* Headline — Century Gothic Bold (heading padrão) */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ fontFamily: "'Century Gothic', Futura, 'Trebuchet MS', sans-serif" }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-monac-ink leading-[1.08]"
-          >
-            Sua empresa no{" "}
-            <br />
-            <span className="text-monac-blue">
-              Piloto Automático.
-            </span>
-          </motion.h1>
-
-          {/* Corpo — Poppins Light */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-monac-ink/60 leading-relaxed max-w-lg font-light"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}
-          >
-            Elimine planilhas, furos no estoque e a desorganização financeira.
-            O <strong className="font-semibold text-monac-ink">Monac</strong> integra
-            Vendas, Produção e Finanças em uma plataforma feita para quem quer crescer.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 pt-2"
-          >
-            <button
-              onClick={() => window.open("https://wa.me/5533999999999", "_blank")}
-              className="btn-monac-primary"
-            >
-              Falar com Consultor
-              <ArrowRight size={18} />
-            </button>
-
-            <button className="btn-monac-outline">
-              Ver Vídeo Demo
-            </button>
-          </motion.div>
-
-          {/* Trust signals */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-8 pt-2"
-          >
-            {["Implantação Acompanhada", "Suporte Humanizado"].map((text) => (
-              <div key={text} className="flex items-center gap-2">
-                <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
+            <motion.div variants={itemVariants}>
+              <span className="brand-pill">
                 <span
-                  className="text-xs text-monac-ink/50 font-medium"
-                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
+                  className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
+                  aria-hidden="true"
+                />
+                Monac ERP™ — Versão 2026
+              </span>
+            </motion.div>
+
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4.25rem] font-bold text-monac-ink dark:text-white leading-[1.05] tracking-tight"
+              style={{
+                fontFamily:
+                  "'Century Gothic', Futura, 'Trebuchet MS', sans-serif",
+              }}
+            >
+              O Sistema{" "}
+              <span className="relative">
+                <span className="gradient-text">Operacional</span>
+              </span>
+              <br />
+              da sua Empresa.
+            </motion.h1>
+
+            <motion.p
+              variants={itemVariants}
+              className="text-monac-ink/60 dark:text-white/60 text-lg lg:text-xl leading-relaxed max-w-lg font-light"
+              style={{ fontFamily: "Poppins, sans-serif", fontWeight: 300 }}
+            >
+              Chega de planilhas desatualizadas e sistemas lentos. Gerencie
+              vendas, estoque, finanças e fiscal em um só lugar.
+            </motion.p>
+
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap gap-3"
+              role="list"
+              aria-label="Diferenciais"
+            >
+              {pills.map((p, i) => (
+                <div
+                  key={i}
+                  role="listitem"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-monac-ink/5 dark:bg-white/5 border border-monac-ink/10 dark:border-white/10 text-monac-ink/70 dark:text-white/70 hover:border-monac-blue/40 dark:hover:border-monac-blue/40 hover:text-monac-blue dark:hover:text-white transition-all"
                 >
-                  {text}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* LADO DIREITO — Dashboard */}
-        <div className="lg:col-span-6 relative z-10 perspective-1000 lg:pl-12">
-
-          {/* Abas do Dashboard */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex gap-2 mb-6 justify-center lg:justify-start"
-          >
-            {(["vendas", "estoque", "financeiro"] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-full text-[10px] font-semibold uppercase tracking-widest transition-all relative`}
-                style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  fontWeight: 600,
-                  color: activeTab === tab ? '#fff' : 'rgba(16,24,32,0.5)',
-                }}
-              >
-                {activeTab === tab && (
-                  <motion.div
-                    layoutId="tab-bg"
-                    className={`absolute inset-0 rounded-full ${tabData[tab].accentColor} -z-10`}
+                  <p.icon
+                    size={14}
+                    className="text-monac-blue"
+                    aria-hidden="true"
                   />
-                )}
-                {tab}
+                  <span
+                    className="text-xs font-medium"
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {p.text}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-4 pt-2"
+            >
+              <button
+                onClick={() =>
+                  openWhatsApp("Olá! Quero uma demonstração do Monac ERP.")
+                }
+                className="btn-monac-primary h-14 px-8 text-sm shine"
+                aria-label="Solicitar demonstração gratuita via WhatsApp"
+              >
+                Começar Gratuitamente{" "}
+                <ArrowRight size={18} aria-hidden="true" />
               </button>
-            ))}
+              <button
+                onClick={() =>
+                  openWhatsApp("Olá! Quero ver o Monac ERP em ação.")
+                }
+                className="h-14 px-8 rounded-xl border border-monac-ink/15 dark:border-white/15 text-monac-ink dark:text-white font-semibold text-sm flex items-center justify-center gap-3 hover:bg-monac-ink/5 dark:hover:bg-white/10 transition-all"
+                style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+                aria-label="Assistir demonstração em vídeo"
+              >
+                <div className="w-8 h-8 rounded-full bg-monac-ink/5 dark:bg-white/10 flex items-center justify-center flex-shrink-0 hover:bg-monac-blue hover:text-white transition-colors">
+                  <Play size={14} className="ml-0.5" aria-hidden="true" />
+                </div>
+                Ver Demo
+              </button>
+            </motion.div>
+
+            <motion.p
+              variants={itemVariants}
+              className="text-monac-ink/40 dark:text-white/30 text-xs font-light"
+              style={{ fontFamily: "Poppins, sans-serif" }}
+            >
+              Sem cartão de crédito · Implantação em 48h · Suporte humano
+            </motion.p>
           </motion.div>
 
-          {/* Card do Sistema */}
           <motion.div
-            initial={{ opacity: 0, rotateX: 10, y: 40 }}
-            animate={{ opacity: 1, rotateX: 0, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            whileHover={{ scale: 1.02, rotateX: 5, transition: { duration: 0.3 } }}
-            className="relative bg-white rounded-2xl shadow-2xl border border-monac-ink/5 overflow-hidden w-full aspect-[4/3] max-w-lg mx-auto lg:mr-0 cursor-pointer group"
-            style={{ boxShadow: "0 25px 60px rgba(0,71,187,0.1), 0 8px 20px rgba(0,0,0,0.06)" }}
+            initial={{ opacity: 0, x: 60, scale: 0.95 }}
+            animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+            transition={{ duration: 0.9, delay: 0.3, ease: cinematicEase }}
+            className="lg:col-span-6 relative"
+            aria-label="Preview do dashboard Monac"
           >
-            {/* Header */}
-            <div className="h-12 bg-monac-paper/80 backdrop-blur-sm border-b border-monac-ink/5 flex items-center px-4 gap-2 transition-colors group-hover:bg-monac-paper">
-              <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-400/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-400/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-green-400/80"></div>
-              </div>
-              <div className="ml-4 h-2 w-24 bg-monac-ink/5 rounded-full"></div>
-              {/* Logo pequena no header do dashboard */}
-              <div className="ml-auto flex items-center gap-1.5 opacity-30">
-                <div className="w-4 h-4 rounded-full border border-monac-blue"></div>
-                <span className="text-[8px] font-bold tracking-widest text-monac-ink"
-                  style={{ fontFamily: "'Century Gothic', sans-serif" }}>MONAC</span>
-              </div>
-            </div>
+            <div
+              className="absolute inset-0 bg-monac-blue/20 blur-3xl rounded-3xl scale-90"
+              aria-hidden="true"
+            />
 
-            {/* Conteúdo */}
-            <div className="p-6 grid grid-cols-3 gap-6 h-full relative">
-              {/* Sidebar */}
-              <div className="col-span-1 space-y-3 border-r border-monac-ink/5 pr-4">
-                <div className="h-8 w-full bg-monac-ink/5 rounded-lg flex items-center px-2 relative overflow-hidden transition-all group-hover:bg-monac-ink/10">
-                  <motion.div layoutId="sidebar-accent" className={`w-1.5 h-4 rounded absolute left-2 ${current.accentColor}`} />
+            <div className="relative bg-white dark:bg-white/[0.06] backdrop-blur-sm border border-monac-ink/10 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-monac-ink/5 dark:border-white/5">
+                <div className="flex items-center gap-2" aria-hidden="true">
+                  <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/70" />
                 </div>
-                <div className="h-2 w-3/4 bg-monac-ink/5 rounded-full mt-4 opacity-60"></div>
-                <div className="h-2 w-1/2 bg-monac-ink/5 rounded-full opacity-60"></div>
-                <div className="h-2 w-2/3 bg-monac-ink/5 rounded-full opacity-60"></div>
-                <div className="mt-8 h-20 w-full bg-monac-ink/5 rounded-lg opacity-40"></div>
+                <span
+                  className="text-monac-ink/40 dark:text-white/40 text-xs"
+                  style={{
+                    fontFamily: "Poppins, sans-serif",
+                    fontWeight: 600,
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  monac.com.br/dashboard
+                </span>
+                <div className="w-16" aria-hidden="true" />
               </div>
 
-              {/* Área principal */}
-              <div className="col-span-2 flex flex-col gap-4">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex justify-between items-end mb-2"
+              <div
+                className="flex border-b border-monac-ink/5 dark:border-white/5"
+                role="tablist"
+                aria-label="Seções do dashboard"
+              >
+                {dashboardTabs.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    role="tab"
+                    aria-selected={activeTab === tab}
+                    className={`flex-1 py-3 text-xs font-semibold transition-all relative ${
+                      activeTab === tab
+                        ? "text-monac-ink dark:text-white"
+                        : "text-monac-ink/40 dark:text-white/30 hover:text-monac-ink/70 dark:hover:text-white/60"
+                    }`}
+                    style={{
+                      fontFamily: "Poppins, sans-serif",
+                      fontWeight: activeTab === tab ? 700 : 500,
+                    }}
                   >
-                    <div>
-                      <div
-                        className="text-[9px] uppercase text-monac-ink/40 font-semibold mb-1"
-                        style={{ fontFamily: 'Poppins, sans-serif', letterSpacing: '0.12em' }}
-                      >
-                        {current.metricTitle}
-                      </div>
-                      {/* Número em Glacial Indifference — regra do guia */}
-                      <div
-                        className="text-2xl text-monac-ink"
-                        style={{ fontFamily: "'Glacial Indifference', Outfit, sans-serif", fontWeight: 400 }}
-                      >
-                        {current.metricValue}
-                      </div>
-                    </div>
-                    <div className={`text-xs font-semibold px-2 py-1 rounded ${
-                      activeTab === "estoque" ? "bg-amber-100 text-amber-600" : "bg-green-50 text-green-500"
-                    }`} style={{ fontFamily: 'Poppins, sans-serif' }}>
-                      {current.growth}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+                    {tab}
+                    {activeTab === tab && (
+                      <motion.div
+                        layoutId="tab-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-monac-blue"
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
 
-                {/* Gráfico */}
-                <div className="flex-1 bg-monac-paper/30 rounded-xl border border-monac-ink/5 relative overflow-hidden flex items-end px-4 pb-0 pt-8 gap-2 group-hover:border-monac-ink/10 transition-colors">
-                  {current.chartHeights.map((height, index) => (
-                    <motion.div
-                      key={`${activeTab}-${index}`}
-                      initial={{ height: "10%" }}
-                      animate={{ height: height }}
-                      transition={{ duration: 0.6, delay: index * 0.1, type: "spring" }}
-                      className={`w-full rounded-t-sm relative ${index === 3 ? `${current.accentColor} shadow-lg` : "bg-monac-ink/10"}`}
+              <div className="p-6 space-y-5">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <div
+                      className="text-monac-ink/40 dark:text-white/40 text-xs mb-1"
+                      style={{ fontFamily: "Poppins, sans-serif" }}
                     >
-                      {index === 3 && <div className="absolute inset-0 bg-white/20 animate-pulse"></div>}
+                      {current.label}
+                    </div>
+                    <motion.div
+                      key={activeTab + "-value"}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-3xl text-monac-ink dark:text-white"
+                      style={{
+                        fontFamily:
+                          "'Glacial Indifference', Outfit, sans-serif",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {current.value}
                     </motion.div>
+                  </div>
+                  <motion.div
+                    key={activeTab + "-trend"}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg"
+                  >
+                    <TrendingUp
+                      size={12}
+                      className="text-emerald-500 dark:text-emerald-400"
+                      aria-hidden="true"
+                    />
+                    <span
+                      className="text-emerald-600 dark:text-emerald-400 text-xs font-semibold"
+                      style={{
+                        fontFamily:
+                          "'Glacial Indifference', Outfit, sans-serif",
+                      }}
+                    >
+                      {current.trend}
+                    </span>
+                  </motion.div>
+                </div>
+
+                <div
+                  className="flex items-end gap-2 h-24"
+                  role="img"
+                  aria-label={`Gráfico de ${activeTab}`}
+                >
+                  {current.bars.map((h, i) => (
+                    <motion.div
+                      key={activeTab + i}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{
+                        delay: i * 0.06,
+                        duration: 0.5,
+                        ease: cinematicEase,
+                      }}
+                      className={`flex-1 rounded-t-md ${
+                        i === current.bars.indexOf(Math.max(...current.bars))
+                          ? "bg-monac-blue"
+                          : "bg-monac-ink/5 dark:bg-white/10"
+                      }`}
+                    />
                   ))}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-2 opacity-50">
-                  <div className="h-12 bg-monac-paper/50 rounded-lg border border-monac-ink/5"></div>
-                  <div className="h-12 bg-monac-paper/50 rounded-lg border border-monac-ink/5"></div>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Entradas", val: "R$ 38.4k", up: true },
+                    { label: "Saídas", val: "R$ 21.2k", up: false },
+                    { label: "Pendentes", val: "R$ 12.1k", up: true },
+                  ].map((m, i) => (
+                    <div
+                      key={i}
+                      className="bg-monac-ink/[0.02] dark:bg-white/5 rounded-xl p-3 border border-monac-ink/5 dark:border-white/5 hover:border-monac-ink/15 dark:hover:border-white/15 transition-colors"
+                    >
+                      <div
+                        className="text-monac-ink/40 dark:text-white/40 text-[10px] mb-1.5"
+                        style={{
+                          fontFamily: "Poppins, sans-serif",
+                          fontWeight: 600,
+                          letterSpacing: "0.1em",
+                        }}
+                      >
+                        {m.label}
+                      </div>
+                      <div
+                        className={`text-sm ${m.up ? "text-emerald-600 dark:text-emerald-400" : "text-red-500 dark:text-red-400"}`}
+                        style={{
+                          fontFamily:
+                            "'Glacial Indifference', Outfit, sans-serif",
+                          fontWeight: 400,
+                        }}
+                      >
+                        {m.val}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
+
+            <motion.div
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-6 -right-4 lg:-right-8 bg-white dark:bg-monac-ink/90 rounded-2xl px-4 py-3 shadow-xl border border-monac-ink/5 dark:border-white/10 flex items-center gap-3"
+              aria-hidden="true"
+            >
+              <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                <ShieldCheck size={16} />
+              </div>
+              <div>
+                <div
+                  className="text-xs font-bold text-monac-ink dark:text-white"
+                  style={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  NF-e Autorizada
+                </div>
+                <div className="text-[10px] text-monac-ink/50 dark:text-white/40">
+                  agora mesmo · 28s
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+              className="absolute -bottom-4 -left-4 lg:-left-8 bg-monac-blue rounded-2xl px-4 py-3 shadow-xl shadow-monac-blue/30 flex items-center gap-3"
+              aria-hidden="true"
+            >
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white">
+                <TrendingUp size={16} />
+              </div>
+              <div>
+                <div
+                  className="text-xs font-bold text-white"
+                  style={{ fontFamily: "Poppins, sans-serif" }}
+                >
+                  Margem subiu 15%
+                </div>
+                <div className="text-[10px] text-white/60">
+                  vs. mês anterior
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
-
-          {/* Cards flutuantes */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`card1-${activeTab}`}
-              initial={{ opacity: 0, x: 20, y: -10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, x: 20, y: 10 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="absolute top-28 -right-4 lg:-right-12 bg-white p-4 rounded-xl shadow-xl border border-monac-ink/5 flex items-center gap-3 z-30"
-              style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.08)" }}
-            >
-              <div className={`h-10 w-10 rounded-full flex items-center justify-center ${current.card1.bg} ${current.card1.color}`}>
-                <current.card1.icon size={20} />
-              </div>
-              <div>
-                <div className="label-brand text-monac-ink/40" style={{ marginBottom: "2px", fontSize: "9px" }}>{current.card1.title}</div>
-                <div className="text-sm font-semibold text-monac-ink whitespace-nowrap" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                  {current.card1.value}
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              key={`card2-${activeTab}`}
-              initial={{ opacity: 0, x: -20, y: 10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, x: -20, y: -10 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              className="absolute bottom-12 -left-4 lg:-left-8 bg-white p-4 rounded-xl shadow-xl border border-monac-ink/5 flex items-center gap-3 z-30"
-              style={{ boxShadow: "0 12px 30px rgba(0,0,0,0.08)" }}
-            >
-              <div className={`h-10 w-10 rounded-full flex items-center justify-center ${current.card2.bg} ${current.card2.color}`}>
-                <current.card2.icon size={20} />
-              </div>
-              <div>
-                <div className="label-brand text-monac-ink/40" style={{ marginBottom: "2px", fontSize: "9px" }}>{current.card2.title}</div>
-                <div className="text-sm font-semibold text-monac-ink whitespace-nowrap" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                  {current.card2.value}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
-      </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          aria-hidden="true"
+        >
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-5 h-8 rounded-full border border-monac-ink/20 dark:border-white/20 flex items-start justify-center pt-1.5"
+          >
+            <div className="w-1 h-1.5 rounded-full bg-monac-ink/30 dark:bg-white/50" />
+          </motion.div>
+          <span
+            className="text-monac-ink/30 dark:text-white/25 text-[10px] uppercase tracking-widest"
+            style={{ fontFamily: "Poppins, sans-serif" }}
+          >
+            Scroll
+          </span>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
