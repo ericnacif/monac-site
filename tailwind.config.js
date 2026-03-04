@@ -4,17 +4,20 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        serif: ["Playfair Display", "serif"],
+        // Century Gothic substituto via Google Fonts (Nunito para headings bold)
+        heading: ["'Century Gothic'", "Futura", "'Trebuchet MS'", "sans-serif"],
+        // Poppins para subtítulos e corpo de texto
+        sans: ["Poppins", "sans-serif"],
+        // Glacial Indifference substituído por Outfit (similar geometric) para números
+        mono: ["'Glacial Indifference'", "Outfit", "monospace"],
       },
       colors: {
-        // AQUI ESTÁ A MUDANÇA: de 'atlas' para 'monac'
         monac: {
           blue: "#0047BB",
           darkBlue: "#003388",
           ink: "#101820",
           paper: "#F2F0EB",
-          gray: "#d4d4d8",
+          gray: "#D4D4D8",
         },
       },
       backgroundImage: {
@@ -27,6 +30,7 @@ export default {
         check: "check 0.5s ease-in-out forwards",
         "fade-up": "fadeUp 0.8s ease-out forwards",
         "border-beam": "borderBeam 2s linear infinite",
+        "float": "float 6s ease-in-out infinite",
       },
       keyframes: {
         check: {
@@ -42,6 +46,14 @@ export default {
           "0%": { backgroundPosition: "0% 50%" },
           "100%": { backgroundPosition: "200% 50%" },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+      },
+      letterSpacing: {
+        widest: "0.2em",
+        "extra-wide": "0.3em",
       },
     },
   },

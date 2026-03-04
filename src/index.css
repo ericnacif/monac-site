@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   MONAC BRAND — SISTEMA DE TIPOGRAFIA
+   Guia de Marca 2026
+   ========================================= */
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -10,29 +15,223 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    /* Poppins como fonte base (body/subtítulos) */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300; /* Light para minúsculas, conforme guia */
+    @apply bg-white text-monac-ink;
+  }
+
+  /* 
+    TIPOGRAFIA MONAC — BRAND GUIDELINE:
+    - Headings (maiúsculo): Century Gothic Bold
+    - Headings (minúsculo): Century Gothic Regular
+    - Subtítulos/Corpo (maiúsculo): Poppins Medium (500)
+    - Subtítulos/Corpo (minúsculo): Poppins Light (300)
+    - Números: Glacial Indifference Regular — NUNCA bold
+  */
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
+    font-weight: 700; /* Bold para maiúsculas */
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  /* Seleção de texto na cor da marca */
+  ::selection {
+    background-color: var(--monac-blue, #0047BB);
+    color: #fff;
   }
 }
 
 @layer utilities {
-  /* Utilitário para efeitos 3D */
+  /* Perspectiva 3D para efeitos */
   .perspective-1000 {
     perspective: 1000px;
   }
 
-  /* --- A TEXTURA NOVA (IMPORTANTE) --- */
-  /* Isso cria o grid sutil no fundo branco */
+  /* Grid sutil de fundo — assinatura visual Monac */
   .bg-tech-grid {
     background-image:
       linear-gradient(rgba(16, 24, 32, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(16, 24, 32, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+
+  /* ---- TIPOGRAFIA UTILITÁRIOS ---- */
+
+  /* Heading — Century Gothic, maiúsculo, bold */
+  .font-heading-upper {
+    font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* Heading — Century Gothic, minúsculo, regular */
+  .font-heading-lower {
+    font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
+    font-weight: 400;
+    text-transform: none;
+  }
+
+  /* Subtítulo — Poppins medium, maiúsculo */
+  .font-sub-upper {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Corpo — Poppins light, minúsculo */
+  .font-body-lower {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+  }
+
+  /* Números — Glacial Indifference, SEMPRE regular, NUNCA bold */
+  .font-number {
+    font-family: 'Glacial Indifference', 'Outfit', sans-serif;
+    font-weight: 400 !important;
+    font-style: normal;
+  }
+
+  /* Labels / Labels de seção — uppercase tracking wide */
+  .label-brand {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.625rem; /* 10px */
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  /* ---- CORES UTILITÁRIOS ---- */
+  .text-brand-blue { color: #0047BB; }
+  .bg-brand-blue { background-color: #0047BB; }
+  .border-brand-blue { border-color: #0047BB; }
+
+  /* ---- EFEITOS VISUAIS ---- */
+
+  /* Linha decorativa lateral (usada em blockquotes e seções) */
+  .brand-rule {
+    border-left: 3px solid #0047BB;
+    padding-left: 1rem;
+  }
+
+  /* Fundo com textura sutil paper */
+  .bg-paper-texture {
+    background-color: #F2F0EB;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(0,71,187,0.03) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(16,24,32,0.02) 0%, transparent 50%);
+  }
+
+  /* Gradiente hero */
+  .hero-gradient {
+    background: linear-gradient(135deg, #F2F0EB 0%, #ffffff 60%, rgba(0,71,187,0.04) 100%);
+  }
+
+  /* Efeito de glow azul */
+  .blue-glow {
+    box-shadow: 0 0 40px rgba(0, 71, 187, 0.15), 0 0 80px rgba(0, 71, 187, 0.08);
+  }
+
+  /* Badge pill da marca */
+  .brand-pill {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full;
+    background: rgba(0, 71, 187, 0.06);
+    border: 1px solid rgba(0, 71, 187, 0.12);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #0047BB;
+  }
 }
 
 @layer components {
-  /* Botão legado (se ainda estiver usando) */
-  .btn-slide {
-    @apply relative h-12 overflow-hidden rounded-lg bg-monac-blue px-8 font-bold uppercase tracking-widest text-white transition-all hover:bg-monac-darkBlue flex items-center justify-center gap-2;
+  /* Botão primário Monac */
+  .btn-monac-primary {
+    @apply relative overflow-hidden rounded-xl px-8 font-bold uppercase transition-all flex items-center justify-center gap-2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    height: 3rem;
+    background-color: #0047BB;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(0, 71, 187, 0.25);
+  }
+
+  .btn-monac-primary:hover {
+    background-color: #003388;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 71, 187, 0.35);
+  }
+
+  /* Botão outline Monac */
+  .btn-monac-outline {
+    @apply relative overflow-hidden rounded-xl px-8 font-bold uppercase transition-all flex items-center justify-center gap-2;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    height: 3rem;
+    background: transparent;
+    color: #101820;
+    border: 1.5px solid rgba(16, 24, 32, 0.12);
+  }
+
+  .btn-monac-outline:hover {
+    border-color: rgba(0, 71, 187, 0.3);
+    color: #0047BB;
+    background: rgba(0, 71, 187, 0.04);
+  }
+
+  /* Card base Monac */
+  .card-monac {
+    @apply rounded-2xl border transition-all;
+    background: #fff;
+    border-color: rgba(16, 24, 32, 0.06);
+  }
+
+  .card-monac:hover {
+    border-color: rgba(0, 71, 187, 0.2);
+    box-shadow: 0 20px 60px rgba(0, 71, 187, 0.06);
+  }
+
+  /* Seção label — rótulo de seção padrão Monac */
+  .section-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #0047BB;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  /* Título de seção padrão */
+  .section-title {
+    font-family: 'Century Gothic', 'Futura', 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    @apply text-3xl md:text-4xl text-monac-ink;
+    line-height: 1.15;
+  }
+
+  /* Subtítulo de seção */
+  .section-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    @apply text-lg text-monac-ink/60 leading-relaxed;
+  }
+
+  /* Número / Stat em destaque */
+  .stat-number {
+    font-family: 'Glacial Indifference', 'Outfit', sans-serif;
+    font-weight: 400;
+    @apply text-3xl text-monac-ink;
   }
 }
