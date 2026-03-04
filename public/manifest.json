@@ -1,15 +1,16 @@
 {
-  "name": "Atlas ERP",
-  "short_name": "Atlas",
+  "name": "Monac ERP",
+  "short_name": "Monac",
+  "description": "O Sistema Operacional da sua Empresa",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F2F0EB",
-  "theme_color": "#101820",
+  "theme_color": "#0047BB",
   "icons": [
     {
       "src": "/favicon-monac.png",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/png"
     }
   ]
 }

@@ -8,8 +8,7 @@ const plans = [
     target: "Comércio e Pequenos Negócios",
     price: "R$ 199,90",
     period: "/mês",
-    description:
-      "O essencial para vender rápido, emitir notas e organizar o estoque sem complicações.",
+    description: "O essencial para vender rápido, emitir notas e organizar o estoque sem complicações.",
     features: [
       "Emissor de NF-e e NFC-e Ilimitado",
       "Controle de Estoque Básico",
@@ -19,8 +18,7 @@ const plans = [
     ],
     cta: "Começar Agora",
     highlight: false,
-    buttonStyle:
-      "border border-monac-ink/10 text-monac-ink hover:bg-monac-ink/5",
+    buttonStyle: "btn-monac-outline",
   },
   {
     name: "Pro",
@@ -28,8 +26,7 @@ const plans = [
     target: "Gestão Completa",
     price: "Sob Consulta",
     period: "",
-    description:
-      "Inteligência financeira, relatórios de performance e controle total para quem quer crescer.",
+    description: "Inteligência financeira, relatórios de performance e controle total para quem quer crescer.",
     features: [
       "Tudo do plano Start",
       "Gestão Financeira (Fluxo de Caixa)",
@@ -38,9 +35,8 @@ const plans = [
       "Suporte Prioritário (WhatsApp)",
     ],
     cta: "Agendar Demonstração",
-    highlight: true, // ESTE É O FOCO
-    buttonStyle:
-      "bg-monac-blue text-white hover:bg-monac-darkBlue shadow-lg shadow-monac-blue/20",
+    highlight: true,
+    buttonStyle: "btn-monac-primary",
   },
   {
     name: "Enterprise",
@@ -48,8 +44,7 @@ const plans = [
     target: "Indústrias e Logística",
     price: "Sob Medida",
     period: "",
-    description:
-      "Módulos avançados de produção, logística e personalizações para operações complexas.",
+    description: "Módulos avançados de produção, logística e personalizações para operações complexas.",
     features: [
       "Tudo do plano Pro",
       "Ordem de Produção (OP)",
@@ -59,31 +54,25 @@ const plans = [
     ],
     cta: "Falar com um Sócio",
     highlight: false,
-    buttonStyle: "bg-monac-ink text-white hover:bg-black",
+    buttonStyle: "bg-monac-ink text-white hover:bg-black rounded-xl h-12 px-8 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 w-full",
   },
 ];
 
 export function Pricing() {
   return (
-    <section
-      id="pricing"
-      className="py-24 bg-monac-paper relative overflow-hidden"
-    >
+    <section id="pricing" className="py-24 bg-monac-paper relative overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12 relative z-10">
-        {/* Cabeçalho */}
+
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-monac-blue mb-4 block">
-            Investimento
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-monac-ink mb-6">
+          <span className="section-label">Investimento</span>
+          <h2 className="section-title mb-6">
             Escolha o plano ideal para o seu momento.
           </h2>
-          <p className="text-monac-ink/60 text-lg">
+          <p className="section-subtitle">
             Transparência total. Sem taxas escondidas de implantação surpresa.
           </p>
         </div>
 
-        {/* Grid de Planos */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {plans.map((plan, index) => (
             <motion.div
@@ -98,77 +87,89 @@ export function Pricing() {
                   : "bg-white border border-monac-ink/5 shadow-sm hover:shadow-xl transition-shadow"
               }`}
             >
-              {/* Badge de Recomendado (Só no Pro) */}
               {plan.highlight && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-monac-blue text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-md">
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-monac-blue text-white px-4 py-1 rounded-full shadow-md"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}
+                >
                   Mais Escolhido
                 </div>
               )}
 
-              {/* Título e Ícone */}
+              {/* Nome do plano — Century Gothic */}
               <div className="flex items-center gap-3 mb-4">
-                <div
-                  className={`p-2 rounded-lg ${plan.highlight ? "bg-monac-blue/10 text-monac-blue" : "bg-gray-100 text-gray-500"}`}
-                >
+                <div className={`p-2 rounded-lg ${plan.highlight ? "bg-monac-blue/10 text-monac-blue" : "bg-gray-100 text-gray-500"}`}>
                   <plan.icon size={20} />
                 </div>
-                <h3 className="text-xl font-bold text-monac-ink">
+                <h3
+                  className="text-xl font-bold text-monac-ink"
+                  style={{ fontFamily: "'Century Gothic', Futura, 'Trebuchet MS', sans-serif" }}
+                >
                   {plan.name}
                 </h3>
               </div>
 
-              {/* Preço */}
+              {/* Preço — Glacial Indifference (número) */}
               <div className="mb-2">
-                <span className="text-3xl font-bold text-monac-ink">
+                <span
+                  className="text-3xl text-monac-ink"
+                  style={{ fontFamily: "'Glacial Indifference', Outfit, sans-serif", fontWeight: 400 }}
+                >
                   {plan.price}
                 </span>
-                <span className="text-sm text-monac-ink/50 font-medium">
+                <span className="text-sm text-monac-ink/50 font-light ml-1" style={{ fontFamily: 'Poppins, sans-serif' }}>
                   {plan.period}
                 </span>
               </div>
-              <p className="text-xs font-bold uppercase tracking-wider text-monac-blue mb-6">
+
+              <p className="label-brand text-monac-blue mb-6" style={{ marginBottom: '1.5rem' }}>
                 {plan.target}
               </p>
 
-              <p className="text-sm text-monac-ink/60 leading-relaxed mb-8 min-h-[60px]">
+              <p className="text-sm text-monac-ink/60 leading-relaxed mb-8 min-h-[60px] font-light" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 300 }}>
                 {plan.description}
               </p>
 
-              {/* Lista de Features */}
               <ul className="space-y-4 mb-8 flex-1">
                 {plan.features.map((feature, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 text-sm text-monac-ink/80"
-                  >
-                    <Check
-                      size={16}
-                      className={`flex-shrink-0 mt-0.5 ${plan.highlight ? "text-monac-blue" : "text-gray-400"}`}
-                    />
+                  <li key={i} className="flex items-start gap-3 text-sm text-monac-ink/80 font-light" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    <Check size={16} className={`flex-shrink-0 mt-0.5 ${plan.highlight ? "text-monac-blue" : "text-gray-400"}`} />
                     <span>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              {/* Botão de Ação */}
-              <button
-                onClick={() =>
-                  window.open("https://wa.me/5533999999999", "_blank")
-                }
-                className={`w-full h-12 rounded-xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 ${plan.buttonStyle}`}
-              >
-                {plan.cta}
-                <ArrowRight size={14} />
-              </button>
+              {plan.highlight ? (
+                <button
+                  onClick={() => window.open("https://wa.me/5533997088999", "_blank")}
+                  className="btn-monac-primary w-full"
+                >
+                  {plan.cta} <ArrowRight size={14} />
+                </button>
+              ) : index === 2 ? (
+                <button
+                  onClick={() => window.open("https://wa.me/5533997088999", "_blank")}
+                  className={plan.buttonStyle}
+                >
+                  {plan.cta} <ArrowRight size={14} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => window.open("https://wa.me/5533997088999", "_blank")}
+                  className="btn-monac-outline w-full"
+                >
+                  {plan.cta} <ArrowRight size={14} />
+                </button>
+              )}
             </motion.div>
           ))}
         </div>
 
-        {/* FAQ Rápido / Garantia */}
         <div className="mt-16 text-center border-t border-monac-ink/5 pt-8">
-          <p className="text-sm text-monac-ink/50">
+          <p className="text-sm text-monac-ink/50 font-light" style={{ fontFamily: 'Poppins, sans-serif' }}>
             Precisa de uma negociação especial para rede de lojas?{" "}
-            <a href="#" className="text-monac-blue font-bold hover:underline">
+            <a href="https://wa.me/5533997088999" target="_blank" rel="noopener noreferrer"
+              className="text-monac-blue font-semibold hover:underline">
               Fale com nossa diretoria.
             </a>
           </p>
