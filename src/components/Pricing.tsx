@@ -1,5 +1,6 @@
 import { Check, ArrowRight, Star, Zap, Building } from "lucide-react";
 import { motion } from "framer-motion";
+import { AnimatedTitle } from "./AnimatedTitle";
 
 const plans = [
   {
@@ -71,9 +72,11 @@ export function Pricing() {
       <div className="max-w-[1200px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="section-label">Investimento</span>
-          <h2 className="section-title mb-6">
+
+          <AnimatedTitle className="section-title mb-6">
             Escolha o plano ideal para o seu momento.
-          </h2>
+          </AnimatedTitle>
+
           <p className="section-subtitle">
             Transparência total. Sem taxas escondidas de implantação surpresa.
           </p>
@@ -174,32 +177,38 @@ export function Pricing() {
               </ul>
 
               {plan.highlight ? (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() =>
                     window.open("https://wa.me/5533997088999", "_blank")
                   }
                   className="btn-monac-primary w-full"
                 >
                   {plan.cta} <ArrowRight size={14} />
-                </button>
+                </motion.button>
               ) : index === 2 ? (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() =>
                     window.open("https://wa.me/5533997088999", "_blank")
                   }
                   className={plan.buttonStyle}
                 >
                   {plan.cta} <ArrowRight size={14} />
-                </button>
+                </motion.button>
               ) : (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() =>
                     window.open("https://wa.me/5533997088999", "_blank")
                   }
                   className="btn-monac-outline w-full"
                 >
                   {plan.cta} <ArrowRight size={14} />
-                </button>
+                </motion.button>
               )}
             </motion.div>
           ))}

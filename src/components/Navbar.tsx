@@ -19,21 +19,32 @@ import {
   TrendingUp,
   ArrowRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { DarkModeToggle } from "./DarkModeToggle";
 import { openWhatsApp } from "../config";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setScrolled(latest > 20);
+  });
 
   useEffect(() => {
     const handleResize = () => {
@@ -128,9 +139,17 @@ export function Navbar() {
 
   return (
     <>
-      <header>
+      <motion.header
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" },
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed w-full z-50"
+      >
         <nav
-          className={`fixed w-full z-50 transition-all duration-500 border-b ${
+          className={`w-full transition-all duration-500 border-b ${
             scrolled || activeDropdown
               ? "bg-white/95 dark:bg-monac-ink/95 backdrop-blur-md border-monac-ink/5 dark:border-white/5 py-3 shadow-sm"
               : "bg-transparent border-transparent py-5 lg:py-6"
@@ -372,7 +391,9 @@ export function Navbar() {
 
             <div className="hidden lg:flex items-center gap-4">
               <DarkModeToggle />
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() =>
                   openWhatsApp("Olá! Gostaria de conhecer o Monac ERP.")
                 }
@@ -380,7 +401,7 @@ export function Navbar() {
                 aria-label="Falar com consultor no WhatsApp"
               >
                 Falar com Consultor <ArrowRight size={16} aria-hidden="true" />
-              </button>
+              </motion.button>
             </div>
 
             <button
@@ -397,7 +418,7 @@ export function Navbar() {
             </button>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {isMenuOpen && (

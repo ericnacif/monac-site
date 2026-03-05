@@ -5,6 +5,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { AnimatedTitle } from "./AnimatedTitle";
 
 const pains = [
   {
@@ -52,17 +53,13 @@ export function PainPoints() {
           >
             Diagnóstico
           </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="section-title mb-6"
-          >
+
+          <AnimatedTitle className="section-title mb-6">
             Sua empresa cresceu.
             <br />
             Suas ferramentas não.
-          </motion.h2>
+          </AnimatedTitle>
+
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -85,14 +82,12 @@ export function PainPoints() {
               transition={{ delay: i * 0.1 }}
               className="card-monac p-8 hover:shadow-xl hover:shadow-monac-blue/5 dark:hover:shadow-monac-blue/10 group cursor-default relative overflow-hidden"
             >
-              {/* Barra lateral */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-monac-blue transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
 
               <div className="h-12 w-12 rounded-lg bg-monac-paper dark:bg-white/5 flex items-center justify-center text-monac-ink/50 dark:text-white/50 group-hover:bg-monac-blue group-hover:text-white transition-colors mb-6">
                 <item.icon size={24} />
               </div>
 
-              {/* Título — Century Gothic Bold */}
               <h3
                 className="text-xl font-bold text-monac-ink dark:text-white mb-3 group-hover:text-monac-blue dark:group-hover:text-[#4d8eff] transition-colors"
                 style={{
@@ -103,7 +98,6 @@ export function PainPoints() {
                 {item.title}
               </h3>
 
-              {/* Corpo — Poppins Light */}
               <p className="text-sm text-monac-ink/60 dark:text-white/60 leading-relaxed mb-6 font-light">
                 {item.problem}
               </p>
@@ -121,7 +115,6 @@ export function PainPoints() {
                   </p>
                 </div>
 
-                {/* Stat — Glacial Indifference para o número */}
                 <div className="bg-monac-paper dark:bg-white/5 rounded-lg p-3 flex justify-between items-center group-hover:bg-monac-blue/5 dark:group-hover:bg-white/10 transition-colors">
                   <span
                     className="label-brand text-monac-ink/40 dark:text-white/40"

@@ -37,7 +37,6 @@ const tabData: Record<
   },
 };
 
-// Tipagem rigorosa para evitar que o TS leia como um simples array de números (number[])
 const cinematicEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Hero() {
@@ -174,7 +173,9 @@ export function Hero() {
               variants={itemVariants}
               className="flex flex-col sm:flex-row gap-4 pt-2"
             >
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() =>
                   openWhatsApp("Olá! Quero uma demonstração do Monac ERP.")
                 }
@@ -183,8 +184,10 @@ export function Hero() {
               >
                 Começar Gratuitamente{" "}
                 <ArrowRight size={18} aria-hidden="true" />
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() =>
                   openWhatsApp("Olá! Quero ver o Monac ERP em ação.")
                 }
@@ -196,7 +199,7 @@ export function Hero() {
                   <Play size={14} className="ml-0.5" aria-hidden="true" />
                 </div>
                 Ver Demo
-              </button>
+              </motion.button>
             </motion.div>
 
             <motion.p
