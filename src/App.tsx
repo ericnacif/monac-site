@@ -108,24 +108,29 @@ function AnimatedRoutes() {
                 title="Monac ERP — O Sistema Operacional da sua Empresa"
                 description="Gerencie vendas, estoque, finanças e emissão fiscal em um só lugar. O ERP mais completo para pequenas e médias empresas brasileiras."
               />
+
+              {/* Visível em todas as telas */}
               <Hero />
               <Stats />
               <PainPoints />
-              <Comparison />
+
+              {/* Oculto no Mobile - O usuário do celular usará o menu para explorar! */}
               <div className="hidden lg:block">
+                <Comparison />
                 <Segments />
                 <Platform />
                 <Pricing />
-              </div>
-              <Testimonials />
-              <div className="hidden lg:block">
+                <Testimonials />
                 <Founders />
                 <Academy />
               </div>
+
               <CTA />
             </PageWrapper>
           }
         />
+
+        {/* Páginas Internas Acessadas via Menu Hamburguer */}
         <Route
           path="/plataforma"
           element={
